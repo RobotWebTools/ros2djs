@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <script type="text/javascript" src="../include/easeljs/easeljs.min.js"></script>
-<script type="text/javascript"
-	src="../include/EventEmitter2/eventemitter2.js"></script>
+<script type="text/javascript" src="../include/EventEmitter2/eventemitter2.js"></script>
 <script type="text/javascript" src="../include/roslibjs/roslib.js"></script>
 <script type="text/javascript" src="../build/ros2d.js"></script>
 
@@ -18,34 +17,46 @@
       url : 'ws://localhost:9090'
     });
 
-    // Create the main viewer.
-    var viewer = new ROS2D.Viewer({
-      divID : 'map',
-      width : 640,
-      height : 480
-    });
-
-    // Create the map loader.
-    var mapLoader = new ROS2D.MapLoader({
+    // Setup a listener for the map data.
+    var mapListener = new ROSLIB.Topic({
       ros : ros,
-      viewer : viewer
+      name : '/map',
+      messageType : 'nav_msgs/OccupancyGrid'
     });
-    
-    mapLoader.loadTopic('map', false);
+    mapListener.subscribe(function(msg) {
+      var occupancyGrid = new ROS2D.OccupancyGrid({
+        message : msg
+      });
+
+      // Create the main viewer.
+      var viewer = new ROS2D.Viewer({
+        divID : 'map',
+        width : occupancyGrid.width,
+        height : occupancyGrid.height
+      });
+
+      viewer.addObject(occupancyGrid.object);
+    });
   }
 </script>
 </head>
 
 <body onload="init()">
-	<h1>Simple URDF Example</h1>
-	<p>Run the following commands in the terminal then refresh this
-		page.</p>
-	<ol>
-		<li>roscore</li>
-		<li>rosrun map_server map_server
-			/opt/ros/groovy/share/rail_maps/maps/ilab.pgm 0.05</li>
-		<li>roslaunch rosbridge_server rosbridge_websocket.launch</li>
-	</ol>
-	<div id="map"></div>
+  <h1>Simple Map Example</h1>
+  <p>
+    Run the following commands in the terminal then refresh this page. This will load a map from the
+    <tt>ros-groovy-rail-maps</tt>
+    package.
+  </p>
+  <ol>
+    <li><tt>roscore</tt>
+    </li>
+    <li><tt>rosrun map_server map_server /opt/ros/groovy/share/rail_maps/maps/ilab.pgm
+        0.05</tt>
+    </li>
+    <li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt>
+    </li>
+  </ol>
+  <div id="map"></div>
 </body>
 </html>

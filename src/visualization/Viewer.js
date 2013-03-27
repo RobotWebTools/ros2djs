@@ -19,12 +19,13 @@ ROS2D.Viewer = function(options) {
   this.width = options.width;
   this.height = options.height;
   this.background = options.background || '#111111';
-  
+
   // create the canvas to render to
   var canvas = document.createElement('canvas');
-  canvas.style.width = this.width + 'px';
-  canvas.style.height = this.height + 'px';
+  canvas.width = this.width;
+  canvas.height = this.height;
   canvas.style.background = this.background;
+  document.getElementById(this.divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
 
