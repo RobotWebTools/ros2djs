@@ -19,17 +19,32 @@ ROS2D.Viewer = function(options) {
   this.width = options.width;
   this.height = options.height;
   this.background = options.background || '#111111';
-  
+
   // create the canvas to render to
   var canvas = document.createElement('canvas');
-  canvas.style.width = this.width + 'px';
-  canvas.style.height = this.height + 'px';
+  canvas.width = this.width;
+  canvas.height = this.height;
   canvas.style.background = this.background;
+  document.getElementById(this.divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
+  
+  // default zoom factor
+  this.scene.scaleX = 20;
+  this.scene.scaleY = 20;
+  
+  // center on the page
+  this.scene.x = this.width/2;
+  this.scene.y = this.height/2;
 
   // add the renderer to the page
   document.getElementById(this.divID).appendChild(canvas);
+  
+  // update at 30fps
+  createjs.Ticker.setFPS(30);
+  createjs.Ticker.addListener(function() {
+    that.scene.update();
+  });
 };
 
 /**
@@ -39,5 +54,4 @@ ROS2D.Viewer = function(options) {
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
   this.scene.addChild(object);
-  this.scene.update();
 };
