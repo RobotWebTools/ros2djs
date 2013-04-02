@@ -60,6 +60,8 @@ ROS2D.OccupancyGrid = function(options) {
 
   // create the bitmap
   createjs.Bitmap.call(this, canvas);
+  // change Y direction
+  this.y = -this.height * message.info.resolution;
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
 };
