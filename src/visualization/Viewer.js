@@ -33,9 +33,8 @@ ROS2D.Viewer = function(options) {
   this.scene.scaleX = 20;
   this.scene.scaleY = 20;
   
-  // center on the page
-  this.scene.x = this.width/2;
-  this.scene.y = this.height/2;
+  // change Y axis center
+  this.scene.y = this.height;
 
   // add the renderer to the page
   document.getElementById(this.divID).appendChild(canvas);
