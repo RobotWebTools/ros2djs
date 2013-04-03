@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - ROS2D.Viewer</title>
+		<title>JsDoc Reference - ROS2D.OccupancyGrid</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -206,7 +206,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class ROS2D.Viewer
+				Class ROS2D.OccupancyGrid
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -217,13 +217,13 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_wg_stor5_rtoris_Documents_WPI_RAIL_ROS_groovy_src_ros2djs_src_visualization_Viewer.js.html">Viewer.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_wg_stor5_rtoris_Documents_WPI_RAIL_ROS_groovy_src_ros2djs_src_maps_OccupancyGrid.js.html">OccupancyGrid.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class ROS2D.Viewer.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class ROS2D.OccupancyGrid.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -236,9 +236,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/ROS2D.Viewer.html#constructor">ROS2D.Viewer</a></b>(options)
+								<b><a href="../symbols/ROS2D.OccupancyGrid.html#constructor">ROS2D.OccupancyGrid</a></b>(options)
 							</div>
-							<div class="description">A Viewer can be used to render an interactive 2D scene to a HTML5 canvas.</div>
+							<div class="description">An OccupancyGrid can convert a ROS occupancy grid message into a createjs Bitmap object.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -249,33 +249,6 @@ ul.inheritsList
 			
 
 <!-- ============================== methods summary ======================== -->
-			
-				
-				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class ROS2D.Viewer.">
-					<caption>Method Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Method Attributes</th>
-							<th scope="col">Method Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/ROS2D.Viewer.html#addObject">addObject</a></b>(object)
-								</div>
-								<div class="description">Add the given createjs ojbect to the global scene in the viewer.</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
-				
 			
 <!-- ============================== events summary ======================== -->
 			
@@ -288,11 +261,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>ROS2D.Viewer</b>(options)
+						<b>ROS2D.OccupancyGrid</b>(options)
 				</div>
 				
 				<div class="description">
-					A Viewer can be used to render an interactive 2D scene to a HTML5 canvas.
+					An OccupancyGrid can convert a ROS occupancy grid message into a createjs Bitmap object.
 					
 				</div>
 				
@@ -308,10 +281,7 @@ ul.inheritsList
 								
 							</dt>
 								<dd>- object with following keys:
- * divID - the ID of the div to place the viewer in
- * width - the initial width, in pixels, of the canvas
- * height - the initial height, in pixels, of the canvas
- * background - the color to render the background, like #efefef</dd>
+  * message - the occupancy grid message</dd>
 						
 						</dl>
 					
@@ -329,47 +299,6 @@ ul.inheritsList
 			
 
 <!-- ============================== method details ========================= -->		
-			
-				<div class="sectionTitle">
-					Method Detail
-				</div>
-				
-					<a name="addObject"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>addObject</b>(object)
-					
-					</div>
-					<div class="description">
-						Add the given createjs ojbect to the global scene in the viewer.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>object</b>
-									
-								</dt>
-								<dd>- the object to add</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					
-				
 			
 			
 <!-- ============================== event details ========================= -->		
