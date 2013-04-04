@@ -8,81 +8,125 @@ var ROS2D = ROS2D || {
  * @author Russell Toris - rctoris@wpi.edu
  */
 
-ROS2D.MapClient = function(options) {
+/**
+ * An OccupancyGrid can convert a ROS occupancy grid message into a createjs Bitmap object.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * message - the occupancy grid message
+ */
+ROS2D.OccupancyGrid = function(options) {
+  var options = options || {};
+  var message = options.message;
+
+  // internal drawing canvas
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
+
+  // save the metadata we need
+  this.pose = new ROSLIB.Pose({
+    position : message.info.origin.position,
+    orientation : message.info.origin.orientation
+  });
+
+  // set the size
+  this.width = message.info.width;
+  this.height = message.info.height;
+  canvas.width = this.width;
+  canvas.height = this.height;
+
+  var imageData = context.createImageData(this.width, this.height);
+  for ( var row = 0; row < this.height; row++) {
+    for ( var col = 0; col < this.width; col++) {
+      // determine the index into the map data
+      var mapI = col + ((this.height - row - 1) * this.width);
+      // determine the value
+      var data = message.data[mapI];
+      if (data === 100) {
+        var val = 0;
+      } else if (data === 0) {
+        var val = 255;
+      } else {
+        var val = 127;
+      }
+
+      // determine the index into the image data array
+      var i = (col + (row * this.width)) * 4;
+      // r
+      imageData.data[i] = val;
+      // g
+      imageData.data[++i] = val;
+      // b
+      imageData.data[++i] = val;
+      // a
+      imageData.data[++i] = 255;
+    }
+  }
+  context.putImageData(imageData, 0, 0);
+
+  // create the bitmap
+  createjs.Bitmap.call(this, canvas);
+  // change Y direction
+  this.y = -this.height * message.info.resolution;
+  this.scaleX = message.info.resolution;
+  this.scaleY = message.info.resolution;
+};
+ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A map that listens to a given occupancy grid topic.
+ * 
+ * Emits the following events:
+ *  * 'change' - there was an update or change in the map
+ *  
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * topic (optional) - the map topic to listen to
+ *   * rootObject (optional) - the root object to add this marker to
+ *   * continuous (optional) - if the map should be continuously loaded (e.g., for SLAM)
+ */
+ROS2D.OccupancyGridClient = function(options) {
   var that = this;
   var options = options || {};
-  this.ros = options.ros;
-  this.topic = options.mapTopic || '/map';
+  var ros = options.ros;
+  var topic = options.topic || '/map';
   this.continuous = options.continuous;
+  this.rootObject = options.rootObject || new createjs.Container();
 
-  // map metadata
-  this.pose = null;
-  this.resolution = null;
-  // internal drawing canvas
-  this.image = document.createElement('canvas');
+  // current grid that is displayed
+  this.currentGrid = null;
 
-  // setup a listener for the map data
-  var mapListener = new ROSLIB.Topic({
-    ros : this.ros,
-    name : this.topic,
+  // subscribe to the topic
+  var rosTopic = new ROSLIB.Topic({
+    ros : ros,
+    name : topic,
     messageType : 'nav_msgs/OccupancyGrid',
     compression : 'png'
   });
-  mapListener.subscribe(function(occupancyGrid) {
-    var context = that.image.getContext('2d');
+  rosTopic.subscribe(function(message) {
+    // check for an old map
+    if (that.currentGrid) {
+      that.rootObject.removeChild(that.currentGrid);
+    }
 
-    // save the metadata we need
-    that.pose = new ROSLIB.Pose({
-      position : occupancyGrid.info.origin.position,
-      orientation : occupancyGrid.info.origin.orientation
+    that.currentGrid = new ROS2D.OccupancyGrid({
+      message : message
     });
-    that.resolution = occupancyGrid.info.resolution;
+    that.rootObject.addChild(that.currentGrid);
 
-    // set the size
-    var width = occupancyGrid.info.width;
-    var height = occupancyGrid.info.height;
-    that.image.width = width;
-    that.image.height = height;
+    that.emit('change');
 
-    var imageData = context.createImageData(width, height);
-    for ( var row = 0; row < height; row++) {
-      for ( var col = 0; col < width; col++) {
-        // determine the index into the map data
-        var mapI = col + ((height - row - 1) * width);
-        // determine the value
-        var data = occupancyGrid.data[mapI];
-        if (data === 100) {
-          var val = 0;
-        } else if (data === 0) {
-          var val = 255;
-        } else {
-          var val = 127;
-        }
-
-        // determine the index into the image data array
-        var i = (col + (row * width)) * 4;
-        // r
-        imageData.data[i] = val;
-        // g
-        imageData.data[++i] = val;
-        // b
-        imageData.data[++i] = val;
-        // a
-        imageData.data[++i] = 255;
-      }
-    }
-    context.putImageData(imageData, 0, 0);
-
-    // check if we only wanted one message
+    // check if we should unsubscribe
     if (!that.continuous) {
-      mapListener.unsubscribe();
+      rosTopic.unsubscribe();
     }
-
-    // notify the user an image is ready
-    that.emit('ready', that.image);
   });
 };
-ROS2D.MapClient.prototype.__proto__ = EventEmitter2.prototype;
+ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
@@ -104,17 +148,32 @@ ROS2D.Viewer = function(options) {
   this.width = options.width;
   this.height = options.height;
   this.background = options.background || '#111111';
-  
+
   // create the canvas to render to
   var canvas = document.createElement('canvas');
-  canvas.style.width = this.width + 'px';
-  canvas.style.height = this.height + 'px';
+  canvas.width = this.width;
+  canvas.height = this.height;
   canvas.style.background = this.background;
+  document.getElementById(this.divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
+  
+  // default zoom factor
+  this.scene.scaleX = 20;
+  this.scene.scaleY = 20;
+  
+  // center on the page
+  this.scene.x = this.width/2;
+  this.scene.y = this.height/2;
 
   // add the renderer to the page
   document.getElementById(this.divID).appendChild(canvas);
+  
+  // update at 30fps
+  createjs.Ticker.setFPS(30);
+  createjs.Ticker.addListener(function() {
+    that.scene.update();
+  });
 };
 
 /**
@@ -124,30 +183,4 @@ ROS2D.Viewer = function(options) {
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
   this.scene.addChild(object);
-  this.scene.update();
-};
-/**
- * @author Russell Toris - rctoris@wpi.edu
- */
-
-ROS2D.MapLoader = function(options) {
-  options = options || {};
-  this.ros = options.ros;
-  this.viewer = options.viewer;
-};
-ROS2D.MapLoader.prototype.loadTopic = function(topic, continuous) {
-  var that = this;
-  var client = new ROS2D.MapClient({
-    ros : this.ros,
-    topic : topic,
-    continuous : continuous
-  });
-  
-  client.on('ready', function(image) {
-    var bitmap = new createjs.Bitmap(image);
-    bitmap.addEventListener("mousedown", function(){
-      console.log('test');
-    });
-    that.viewer.addObject(bitmap);
-  });
 };
