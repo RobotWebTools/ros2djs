@@ -4,7 +4,39 @@
 
 var ROS2D = ROS2D || {
   REVISION : '1'
-};/**
+};
+
+// convert the given global Stage coordinates to ROS coordinates
+createjs.Stage.prototype.globalToRos = function(x, y) {
+  var rosX = x / this.scaleX;
+  // change Y direction
+  var rosY = (this.y - y) / this.scaleY;
+  return {
+    x : rosX,
+    y : rosY
+  };
+};
+
+// convert a ROS quaternion to theta in degrees
+createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
+  // convert to radians
+  var q0 = orientation.w;
+  var q1 = orientation.x;
+  var q2 = orientation.y;
+  var q3 = orientation.z;
+  var theta = Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (Math.pow(q2, 2) + Math.pow(q3, 2)));
+
+  // convert to degrees
+  var deg = theta * (180.0 / Math.PI);
+  if (deg >= 0 && deg <= 180) {
+    deg += 270;
+  } else {
+    deg -= 90;
+  }
+
+  return -deg;
+};
+/**
  * @author Russell Toris - rctoris@wpi.edu
  */
 
@@ -70,6 +102,8 @@ ROS2D.OccupancyGrid = function(options) {
   this.y = -this.height * message.info.resolution;
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
+  this.width *= this.scaleX;
+  this.height *= this.scaleY;
 };
 ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
 /**
@@ -132,6 +166,45 @@ ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
  */
 
 /**
+ * A navigation arrow is a directed triangle that can be used to display orientation.
+ * 
+ * @constructor
+ * @param options - object with following keys:
+ *   * size (optional) - the size of the marker
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ *   * fillColor (optional) - the createjs color for the fill
+ */
+ROS2D.NavigationArrow = function(options) {
+  var options = options || {};
+  var size = options.size || 10;
+  var strokeSize = options.strokeSize || 3;
+  var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+  var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
+
+  // draw the arrow
+  var graphics = new createjs.Graphics();
+  // line width
+  graphics.setStrokeStyle(strokeSize);
+  graphics.moveTo(-size / 2.0, size / 2.0);
+  graphics.beginStroke(strokeColor);
+  graphics.beginFill(fillColor);
+  graphics.lineTo(0, -size);
+  graphics.lineTo(size / 2.0, size / 2.0);
+  graphics.lineTo(-size / 2.0, size / 2.0);
+  graphics.closePath();
+  graphics.endFill();
+  graphics.endStroke();
+
+  // create the shape
+  createjs.Shape.call(this, graphics);
+};
+ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
  * A Viewer can be used to render an interactive 2D scene to a HTML5 canvas.
  *
  * @constructor
@@ -139,7 +212,8 @@ ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
  *  * divID - the ID of the div to place the viewer in
  *  * width - the initial width, in pixels, of the canvas
  *  * height - the initial height, in pixels, of the canvas
- *  * background - the color to render the background, like #efefef
+ *  * background (optional) - the color to render the background, like #efefef
+ *  * resolution (optional) - the pixels per meter resolution
  */
 ROS2D.Viewer = function(options) {
   var that = this;
@@ -147,6 +221,7 @@ ROS2D.Viewer = function(options) {
   this.divID = options.divID;
   this.width = options.width;
   this.height = options.height;
+  this.resolution = options.resolution || 0.05;
   this.background = options.background || '#111111';
 
   // create the canvas to render to
@@ -157,18 +232,13 @@ ROS2D.Viewer = function(options) {
   document.getElementById(this.divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
-  
-  // default zoom factor
-  this.scene.scaleX = 20;
-  this.scene.scaleY = 20;
-  
-  // center on the page
-  this.scene.x = this.width/2;
-  this.scene.y = this.height/2;
+
+  // change Y axis center
+  this.scene.y = this.height;
 
   // add the renderer to the page
   document.getElementById(this.divID).appendChild(canvas);
-  
+
   // update at 30fps
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addListener(function() {
@@ -177,10 +247,21 @@ ROS2D.Viewer = function(options) {
 };
 
 /**
- * Add the given createjs ojbect to the global scene in the viewer.
+ * Add the given createjs object to the global scene in the viewer.
  * 
  * @param object - the object to add
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
   this.scene.addChild(object);
+};
+
+/**
+ * Scale the scene to fit the given width and height into the current canvas.
+ * 
+ * @param width - the width to scale to in meters
+ * @param height - the height to scale to in meters
+ */
+ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
+  this.scene.scaleX = this.width / width;
+  this.scene.scaleY = this.height / height;
 };
