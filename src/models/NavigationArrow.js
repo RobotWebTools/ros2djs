@@ -22,10 +22,10 @@ ROS2D.NavigationArrow = function(options) {
   // draw the arrow
   var graphics = new createjs.Graphics();
   // line width
-  graphics.setStrokeStyle(size / 3.0);
+  graphics.setStrokeStyle(strokeSize);
   graphics.moveTo(-size / 2.0, size / 2.0);
-  graphics.beginStroke(createjs.Graphics.getRGB(0, 0, 0));
-  graphics.beginFill(createjs.Graphics.getRGB(255, 0, 0));
+  graphics.beginStroke(strokeColor);
+  graphics.beginFill(fillColor);
   graphics.lineTo(0, -size);
   graphics.lineTo(size / 2.0, size / 2.0);
   graphics.lineTo(-size / 2.0, size / 2.0);
