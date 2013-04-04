@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<script type="text/javascript" src="../include/easeljs/easeljs.min.js"></script>
+<script type="text/javascript" src="../include/EaselJS/easeljs.js"></script>
 <script type="text/javascript" src="../include/EventEmitter2/eventemitter2.js"></script>
 <script type="text/javascript" src="../include/roslibjs/roslib.js"></script>
 <script type="text/javascript" src="../build/ros2d.js"></script>
@@ -20,14 +20,18 @@
     // Create the main viewer.
     var viewer = new ROS2D.Viewer({
       divID : 'map',
-      width : 625,
-      height : 510
+      width : 308,
+      height : 250
     });
 
     // Setup the map client.
     var gridClient = new ROS2D.OccupancyGridClient({
       ros : ros,
       rootObject : viewer.scene
+    });
+    // Scale the canvas to fit to the map
+    gridClient.on('change', function(){
+      viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
     });
   }
 </script>
