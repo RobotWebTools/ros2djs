@@ -4,7 +4,39 @@
 
 var ROS2D = ROS2D || {
   REVISION : '1'
-};/**
+};
+
+// convert the given global Stage coordinates to ROS coordinates
+createjs.Stage.prototype.globalToRos = function(x, y) {
+  var rosX = x / this.scaleX;
+  // change Y direction
+  var rosY = (this.y - y) / this.scaleY;
+  return {
+    x : rosX,
+    y : rosY
+  };
+};
+
+// convert a ROS quaternion to theta in degrees
+createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
+  // convert to radians
+  var q0 = orientation.w;
+  var q1 = orientation.x;
+  var q2 = orientation.y;
+  var q3 = orientation.z;
+  var theta = Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (Math.pow(q2, 2) + Math.pow(q3, 2)));
+
+  // convert to degrees
+  var deg = theta * (180.0 / Math.PI);
+  if (deg >= 0 && deg <= 180) {
+    deg += 270;
+  } else {
+    deg -= 90;
+  }
+
+  return -deg;
+};
+/**
  * @author Russell Toris - rctoris@wpi.edu
  */
 
@@ -129,6 +161,45 @@ ROS2D.OccupancyGridClient = function(options) {
   });
 };
 ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A navigation arrow is a directed triangle that can be used to display orientation.
+ * 
+ * @constructor
+ * @param options - object with following keys:
+ *   * size (optional) - the size of the marker
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ *   * fillColor (optional) - the createjs color for the fill
+ */
+ROS2D.NavigationArrow = function(options) {
+  var options = options || {};
+  var size = options.size || 10;
+  var strokeSize = options.strokeSize || 3;
+  var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+  var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
+
+  // draw the arrow
+  var graphics = new createjs.Graphics();
+  // line width
+  graphics.setStrokeStyle(strokeSize);
+  graphics.moveTo(-size / 2.0, size / 2.0);
+  graphics.beginStroke(strokeColor);
+  graphics.beginFill(fillColor);
+  graphics.lineTo(0, -size);
+  graphics.lineTo(size / 2.0, size / 2.0);
+  graphics.lineTo(-size / 2.0, size / 2.0);
+  graphics.closePath();
+  graphics.endFill();
+  graphics.endStroke();
+
+  // create the shape
+  createjs.Shape.call(this, graphics);
+};
+ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */

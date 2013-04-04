@@ -10,7 +10,7 @@ var ROS2D = ROS2D || {
 createjs.Stage.prototype.globalToRos = function(x, y) {
   var rosX = x / this.scaleX;
   // change Y direction
-  var rosY = this.y - (y / this.scaleY);
+  var rosY = (this.y - y) / this.scaleY;
   return {
     x : rosX,
     y : rosY
