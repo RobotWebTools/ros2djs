@@ -10,9 +10,9 @@ For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check
 This project is released as part of the [Robot Web Tools](http://robotwebtools.org/) effort.
 
 ### Usage ###
-Pre-built files can be found in either [ros3d.js](build/ros3d.js) or [ros3d.min.js](build/ros3d.min.js).
+Pre-built files can be found in either [ros2d.js](build/ros2d.js) or [ros2d.min.js](build/ros2d.min.js).
 
-Alternatively, you can use the current release via the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/ros2djs/current/ros3d.js)) | ([min](http://cdn.robotwebtools.org/ros2djs/current/ros3d.min.js))
+Alternatively, you can use the current release via the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/ros2djs/current/ros3d.js)) | ([min](http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js))
 
 ### Dependencies ###
 ros2djs depends on:
@@ -20,11 +20,11 @@ ros2djs depends on:
 [EventEmitter2](https://github.com/hij1nx/EventEmitter2). The current supported version is 0.4.11.
 The current supported version can be found [in this project](include/EventEmitter2/eventemitter2.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js)) | ([min](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.min.js))
 
-[three.js](https://github.com/mrdoob/three.js/). The current supported version is r56.
-The current supported version can be found [in this project](include/threejs/three.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/threejs/r56/three.js)) | ([min](http://cdn.robotwebtools.org/threejs/r56/three.minjs)).
-
 [roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is r4.
 The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/roslibjs/r4/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r4/roslib.min.js)).
+
+[easeljs](http://www.createjs.com/#!/EaselJS). 
+The current supported version can be found [in this project](include/easeljs/easeljs.min.js) 
 
 ### Build ###
 To build from source, use the provided [ANT script](utils/build.xml).
