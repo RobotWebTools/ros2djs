@@ -64,5 +64,7 @@ ROS2D.OccupancyGrid = function(options) {
   this.y = -this.height * message.info.resolution;
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
+  this.width *= this.scaleX;
+  this.height *= this.scaleY;
 };
 ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;

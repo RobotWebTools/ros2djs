@@ -29,6 +29,10 @@
       ros : ros,
       rootObject : viewer.scene
     });
+    // Scale the canvas to fit to the map
+    gridClient.on('change', function(){
+      viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
+    });
   }
 </script>
 </head>

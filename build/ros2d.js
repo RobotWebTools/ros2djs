@@ -70,6 +70,8 @@ ROS2D.OccupancyGrid = function(options) {
   this.y = -this.height * message.info.resolution;
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
+  this.width *= this.scaleX;
+  this.height *= this.scaleY;
 };
 ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
 /**
@@ -139,7 +141,8 @@ ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
  *  * divID - the ID of the div to place the viewer in
  *  * width - the initial width, in pixels, of the canvas
  *  * height - the initial height, in pixels, of the canvas
- *  * background - the color to render the background, like #efefef
+ *  * background (optional) - the color to render the background, like #efefef
+ *  * resolution (optional) - the pixels per meter resolution
  */
 ROS2D.Viewer = function(options) {
   var that = this;
@@ -147,6 +150,7 @@ ROS2D.Viewer = function(options) {
   this.divID = options.divID;
   this.width = options.width;
   this.height = options.height;
+  this.resolution = options.resolution || 0.05;
   this.background = options.background || '#111111';
 
   // create the canvas to render to
@@ -157,17 +161,13 @@ ROS2D.Viewer = function(options) {
   document.getElementById(this.divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
-  
-  // default zoom factor
-  this.scene.scaleX = 20;
-  this.scene.scaleY = 20;
-  
+
   // change Y axis center
   this.scene.y = this.height;
 
   // add the renderer to the page
   document.getElementById(this.divID).appendChild(canvas);
-  
+
   // update at 30fps
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addListener(function() {
@@ -176,10 +176,21 @@ ROS2D.Viewer = function(options) {
 };
 
 /**
- * Add the given createjs ojbect to the global scene in the viewer.
+ * Add the given createjs object to the global scene in the viewer.
  * 
  * @param object - the object to add
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
   this.scene.addChild(object);
+};
+
+/**
+ * Scale the scene to fit the given width and height into the current canvas.
+ * 
+ * @param width - the width to scale to in meters
+ * @param height - the height to scale to in meters
+ */
+ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
+  this.scene.scaleX = this.width / width;
+  this.scene.scaleY = this.height / height;
 };
