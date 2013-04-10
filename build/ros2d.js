@@ -36,6 +36,7 @@ createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
 
   return -deg;
 };
+
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
@@ -48,7 +49,7 @@ createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
  *   * message - the occupancy grid message
  */
 ROS2D.OccupancyGrid = function(options) {
-  var options = options || {};
+  options = options || {};
   var message = options.message;
 
   // internal drawing canvas
@@ -74,12 +75,13 @@ ROS2D.OccupancyGrid = function(options) {
       var mapI = col + ((this.height - row - 1) * this.width);
       // determine the value
       var data = message.data[mapI];
+      var val;
       if (data === 100) {
-        var val = 0;
+        val = 0;
       } else if (data === 0) {
-        var val = 255;
+        val = 255;
       } else {
-        var val = 127;
+        val = 127;
       }
 
       // determine the index into the image data array
@@ -106,16 +108,17 @@ ROS2D.OccupancyGrid = function(options) {
   this.height *= this.scaleY;
 };
 ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
+
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
 
 /**
  * A map that listens to a given occupancy grid topic.
- * 
+ *
  * Emits the following events:
  *  * 'change' - there was an update or change in the map
- *  
+ *
  * @constructor
  * @param options - object with following keys:
  *   * ros - the ROSLIB.Ros connection handle
@@ -125,7 +128,7 @@ ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
  */
 ROS2D.OccupancyGridClient = function(options) {
   var that = this;
-  var options = options || {};
+  options = options || {};
   var ros = options.ros;
   var topic = options.topic || '/map';
   this.continuous = options.continuous;
@@ -161,13 +164,14 @@ ROS2D.OccupancyGridClient = function(options) {
   });
 };
 ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
+
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
 
 /**
  * A navigation arrow is a directed triangle that can be used to display orientation.
- * 
+ *
  * @constructor
  * @param options - object with following keys:
  *   * size (optional) - the size of the marker
@@ -176,7 +180,7 @@ ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
  *   * fillColor (optional) - the createjs color for the fill
  */
 ROS2D.NavigationArrow = function(options) {
-  var options = options || {};
+  options = options || {};
   var size = options.size || 10;
   var strokeSize = options.strokeSize || 3;
   var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
@@ -200,6 +204,7 @@ ROS2D.NavigationArrow = function(options) {
   createjs.Shape.call(this, graphics);
 };
 ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
+
 /**
  * @author Russell Toris - rctoris@wpi.edu
  */
@@ -217,7 +222,7 @@ ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
  */
 ROS2D.Viewer = function(options) {
   var that = this;
-  var options = options || {};
+  options = options || {};
   this.divID = options.divID;
   this.width = options.width;
   this.height = options.height;
@@ -248,7 +253,7 @@ ROS2D.Viewer = function(options) {
 
 /**
  * Add the given createjs object to the global scene in the viewer.
- * 
+ *
  * @param object - the object to add
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
@@ -257,7 +262,7 @@ ROS2D.Viewer.prototype.addObject = function(object) {
 
 /**
  * Scale the scene to fit the given width and height into the current canvas.
- * 
+ *
  * @param width - the width to scale to in meters
  * @param height - the height to scale to in meters
  */

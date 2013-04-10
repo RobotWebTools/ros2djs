@@ -15,7 +15,7 @@
  */
 ROS2D.Viewer = function(options) {
   var that = this;
-  var options = options || {};
+  options = options || {};
   this.divID = options.divID;
   this.width = options.width;
   this.height = options.height;
@@ -46,7 +46,7 @@ ROS2D.Viewer = function(options) {
 
 /**
  * Add the given createjs object to the global scene in the viewer.
- * 
+ *
  * @param object - the object to add
  */
 ROS2D.Viewer.prototype.addObject = function(object) {
@@ -55,7 +55,7 @@ ROS2D.Viewer.prototype.addObject = function(object) {
 
 /**
  * Scale the scene to fit the given width and height into the current canvas.
- * 
+ *
  * @param width - the width to scale to in meters
  * @param height - the height to scale to in meters
  */

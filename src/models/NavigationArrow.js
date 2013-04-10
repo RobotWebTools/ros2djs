@@ -4,7 +4,7 @@
 
 /**
  * A navigation arrow is a directed triangle that can be used to display orientation.
- * 
+ *
  * @constructor
  * @param options - object with following keys:
  *   * size (optional) - the size of the marker
@@ -13,7 +13,7 @@
  *   * fillColor (optional) - the createjs color for the fill
  */
 ROS2D.NavigationArrow = function(options) {
-  var options = options || {};
+  options = options || {};
   var size = options.size || 10;
   var strokeSize = options.strokeSize || 3;
   var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
