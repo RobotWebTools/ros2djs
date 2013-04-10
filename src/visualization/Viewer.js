@@ -10,24 +10,22 @@
  *  * divID - the ID of the div to place the viewer in
  *  * width - the initial width, in pixels, of the canvas
  *  * height - the initial height, in pixels, of the canvas
- *  * background (optional) - the color to render the background, like #efefef
- *  * resolution (optional) - the pixels per meter resolution
+ *  * background (optional) - the color to render the background, like '#efefef'
  */
 ROS2D.Viewer = function(options) {
   var that = this;
   options = options || {};
-  this.divID = options.divID;
+  var divID = options.divID;
   this.width = options.width;
   this.height = options.height;
-  this.resolution = options.resolution || 0.05;
-  this.background = options.background || '#111111';
+  var background = options.background || '#111111';
 
   // create the canvas to render to
   var canvas = document.createElement('canvas');
   canvas.width = this.width;
   canvas.height = this.height;
-  canvas.style.background = this.background;
-  document.getElementById(this.divID).appendChild(canvas);
+  canvas.style.background = background;
+  document.getElementById(divID).appendChild(canvas);
   // create the easel to use
   this.scene = new createjs.Stage(canvas);
 
@@ -35,7 +33,7 @@ ROS2D.Viewer = function(options) {
   this.scene.y = this.height;
 
   // add the renderer to the page
-  document.getElementById(this.divID).appendChild(canvas);
+  document.getElementById(divID).appendChild(canvas);
 
   // update at 30fps
   createjs.Ticker.setFPS(30);
