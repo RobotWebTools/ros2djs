@@ -6,7 +6,7 @@
  * A map that listens to a given occupancy grid topic.
  *
  * Emits the following events:
- *  * 'change' - there was an update or change in the map
+ *   * 'change' - there was an update or change in the map
  *
  * @constructor
  * @param options - object with following keys:

@@ -20,7 +20,7 @@ ros2djs depends on:
 
 [EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.6.0. The current supported version can be found [in this project](include/EaselJS/easeljs.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js))
 
-[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is r5. The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/r5/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js)).
+[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is r5. The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/r5/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js))
 
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building.
@@ -29,5 +29,5 @@ Checkout [utils/README.md](utils/README.md) for details on building.
 ros2djs is released with a BSD license. For full terms and conditions, see the [LICENSE](LICENSE) file.
 
 ### Authors
-See the [AUTHORS](AUTHORS) file for a full list of contributors.
+See the [AUTHORS.md](AUTHORS) file for a full list of contributors.
 

@@ -1,5 +1,5 @@
 ros2djs Build Setup
-====================
+===================
 
 [Grunt](http://gruntjs.com/) is used for building, including concatenating, minimizing, documenting, linting, and testing.
 
