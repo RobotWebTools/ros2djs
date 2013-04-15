@@ -1,8 +1,7 @@
-ros3djs Build Setup
+ros2djs Build Setup
 ====================
 
-[Grunt](http://gruntjs.com/) is used for building, including concatenating,
-minimizing, documenting, linting, and testing.
+[Grunt](http://gruntjs.com/) is used for building, including concatenating, minimizing, documenting, linting, and testing.
 
 ### Install Grunt and its Dependencies
 
@@ -16,7 +15,7 @@ minimizing, documenting, linting, and testing.
    * `sudo npm install -g grunt-cli karma`
    * `sudo rm -rf ~/.npm ~/tmp`
  3. Install the Grunt tasks specific to this project
-   * `cd /path/to/ros3djs/utils/`
+   * `cd /path/to/ros2djs/utils/`
    * `npm install .`
  4. (Optional) To generate the documentation, you'll need to setup Java. Documentation generation is not required for patches.
    * `echo "export JAVA_HOME=/usr/lib/jvm/default-java/jre" >> ~/.bashrc`
@@ -30,7 +29,7 @@ minimizing, documenting, linting, and testing.
  2. Install Grunt and the test runner [Karma](http://karma-runner.github.io/)
    * `sudo npm install -g grunt-cli karma`
  3. Install the Grunt tasks specific to this project
-   * `cd /path/to/ros3djs/utils/`
+   * `cd /path/to/ros2djs/utils/`
    * `npm install .`
 
 ### Build with Grunt
@@ -39,16 +38,12 @@ Before proceeding, please confirm you have installed the dependencies above.
 
 To run the build tasks:
 
- 1. `cd /path/to/ros3djs/utils/`
+ 1. `cd /path/to/ros2djs/utils/`
  2. `grunt build`
 
-`grunt build` will concatenate and minimize the files under src and replace
-ros3d.js and ros3d.min.js in the build directory. It will also run the linter
-and test cases. This is what [Travis
-CI](https://travis-ci.org/RobotWebTools/ros3djs) runs when a Pull Request is
-submitted.
+`grunt build` will concatenate and minimize the files under src and replace ros2d.js and ros2d.min.js in the build directory. It will also run the linter and test cases. This is what [Travis CI](https://travis-ci.org/RobotWebTools/ros2djs) runs when a Pull Request is submitted.
 
-`grunt dev` will watch for any changes to any of the src/ files and
-automatically concatenate and minimize the files. This is ideal for those
-developing as you should only have to run `grunt dev` once.
+`grunt dev` will watch for any changes to any of the src/ files and automatically concatenate and minimize the files. This is ideal for those developing as you should only have to run `grunt dev` once.
+
+`grunt doc` will rebuild all JSDoc for the project.
 

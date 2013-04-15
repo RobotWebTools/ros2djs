@@ -11,19 +11,16 @@ This project is released as part of the [Robot Web Tools](http://robotwebtools.o
 ### Usage
 Pre-built files can be found in either [ros2d.js](build/ros2d.js) or [ros2d.min.js](build/ros2d.min.js).
 
-Alternatively, you can use the current release via the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/ros2djs/current/ros2d.js)) | ([min](http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js))
+Alternatively, you can use the current release via the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/ros2djs/current/ros2d.js)) | ([min](http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js))
 
 ### Dependencies
 ros2djs depends on:
 
-[EventEmitter2](https://github.com/hij1nx/EventEmitter2). The current supported version is 0.4.11.
-The current supported version can be found [in this project](include/EventEmitter2/eventemitter2.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js)) | ([min](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.min.js))
+[EventEmitter2](https://github.com/hij1nx/EventEmitter2). The current supported version is 0.4.11. The current supported version can be found [in this project](include/EventEmitter2/eventemitter2.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js)) | ([min](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.min.js))
 
-[EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.6.0.
-The current supported version can be found [in this project](include/EaselJS/easeljs.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js)).
+[EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.6.0. The current supported version can be found [in this project](include/EaselJS/easeljs.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js))
 
-[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is r5.
-The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/roslibjs/r4/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js)).
+[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is r5. The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/r5/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js)).
 
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building.
