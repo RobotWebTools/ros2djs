@@ -1,2 +1,3 @@
-2013-04-10 - **r1**
- * Initial development of ROS3D [(rctoris)](https://github.com/rctoris/)
+2013-04-15 - **r1**
+ * Initial development of ROS2D [(rctoris)](https://github.com/rctoris/)
+
