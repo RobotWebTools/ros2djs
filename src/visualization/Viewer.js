@@ -7,10 +7,10 @@
  *
  * @constructor
  * @param options - object with following keys:
- *  * divID - the ID of the div to place the viewer in
- *  * width - the initial width, in pixels, of the canvas
- *  * height - the initial height, in pixels, of the canvas
- *  * background (optional) - the color to render the background, like '#efefef'
+ *   * divID - the ID of the div to place the viewer in
+ *   * width - the initial width, in pixels, of the canvas
+ *   * height - the initial height, in pixels, of the canvas
+ *   * background (optional) - the color to render the background, like '#efefef'
  */
 ROS2D.Viewer = function(options) {
   var that = this;
