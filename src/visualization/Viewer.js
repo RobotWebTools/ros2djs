@@ -61,3 +61,15 @@ ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
   this.scene.scaleX = this.width / width;
   this.scene.scaleY = this.height / height;
 };
+
+
+/**
+  * Resize the viewer canvas with given width and height.
+  *
+  * @param width - the new width of canvas
+  * @param height - the new height of canvas
+  */
+ROS2D.Viewer.prototype.resizeCanvas = function(width, height) {
+  this.scene.canvas.width = this.width = width;
+  this.scene.canvas.height = this.height = height;
+};
