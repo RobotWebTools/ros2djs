@@ -5,7 +5,7 @@
  */
 
 /**
- * A map that listens to a given occupancy grid topic.
+ * A static map that receives from map_server..
  *
  * Emits the following events:
  *   * 'change' - there was an update or change in the map
