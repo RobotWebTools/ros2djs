@@ -1,11 +1,10 @@
 /**
- * @author Jihoon Lee- jihoonlee.in@gmail.com 
- *
- * - Most Implementation is copied from OccupancyGridClient implemented by Russel Toris - rctoris@wpi.edu
+ * @author Jihoon Lee- jihoonlee.in@gmail.com
+ * @author Russell Toris - rctoris@wpi.edu
  */
 
 /**
- * A static map that receives from map_server..
+ * A static map that receives from map_server.
  *
  * Emits the following events:
  *   * 'change' - there was an update or change in the map
@@ -13,7 +12,7 @@
  * @constructor
  * @param options - object with following keys:
  *   * ros - the ROSLIB.Ros connection handle
- *   * service (optional) - the map topic to listen to
+ *   * service (optional) - the map topic to listen to, like '/static_map'
  *   * rootObject (optional) - the root object to add this marker to
  */
 ROS2D.OccupancyGridSrvClient = function(options) {
@@ -45,8 +44,7 @@ ROS2D.OccupancyGridSrvClient = function(options) {
     });
     that.rootObject.addChild(that.currentGrid);
 
-    that.emit('change');
-
+    that.emit('change', that.currentGrid);
   });
 };
 ROS2D.OccupancyGridSrvClient.prototype.__proto__ = EventEmitter2.prototype;
