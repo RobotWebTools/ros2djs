@@ -58,6 +58,23 @@ ROS2D.Viewer.prototype.addObject = function(object) {
  * @param height - the height to scale to in meters
  */
 ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
+  // store the actual offset in the ROS coordinate system
+  var tmpY = this.height - (this.scene.y * this.scene.scaleY);
   this.scene.scaleX = this.width / width;
   this.scene.scaleY = this.height / height;
+  // reset the offset
+  this.scene.x = (this.scene.x * this.scene.scaleX);
+  this.scene.y -= (tmpY * this.scene.scaleY) - tmpY;
+};
+
+/**
+ * Shift the main view of the canvas by the given amount. This is based on the
+ * ROS coordinate system. That is, Y is opposite that of a traditional canvas.
+ *
+ * @param x - the amount to shift by in the x direction in meters
+ * @param y - the amount to shift by in the y direction in meters
+ */
+ROS2D.Viewer.prototype.shift = function(x, y) {
+  this.scene.x -= (x * this.scene.scaleX);
+  this.scene.y += (y * this.scene.scaleY);
 };
