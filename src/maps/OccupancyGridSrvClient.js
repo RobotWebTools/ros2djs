@@ -13,16 +13,14 @@
  * @constructor
  * @param options - object with following keys:
  *   * ros - the ROSLIB.Ros connection handle
- *   * topic (optional) - the map topic to listen to
+ *   * service (optional) - the map topic to listen to
  *   * rootObject (optional) - the root object to add this marker to
- *   * continuous (optional) - if the map should be continuously loaded (e.g., for SLAM)
  */
 ROS2D.OccupancyGridSrvClient = function(options) {
   var that = this;
   options = options || {};
   var ros = options.ros;
   var service = options.service || '/static_map';
-  this.continuous = options.continuous;
   this.rootObject = options.rootObject || new createjs.Container();
 
   // current grid that is displayed
@@ -47,7 +45,7 @@ ROS2D.OccupancyGridSrvClient = function(options) {
     });
     that.rootObject.addChild(that.currentGrid);
 
-    that.emit('change',that.currentGrid.origin);
+    that.emit('change');
 
   });
 };
