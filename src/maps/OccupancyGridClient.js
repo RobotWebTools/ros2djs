@@ -44,7 +44,7 @@ ROS2D.OccupancyGridClient = function(options) {
     });
     that.rootObject.addChild(that.currentGrid);
 
-    that.emit('change');
+    that.emit('change',that.currentGrid.origin);
 
     // check if we should unsubscribe
     if (!that.continuous) {

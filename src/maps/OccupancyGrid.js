@@ -18,7 +18,7 @@ ROS2D.OccupancyGrid = function(options) {
   var context = canvas.getContext('2d');
 
   // save the metadata we need
-  this.pose = new ROSLIB.Pose({
+  this.origin = new ROSLIB.Pose({
     position : message.info.origin.position,
     orientation : message.info.origin.orientation
   });
