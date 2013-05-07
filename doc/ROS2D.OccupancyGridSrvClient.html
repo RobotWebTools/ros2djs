@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: OccupancyGridClient</title>
+    <title>JSDoc: Class: OccupancyGridSrvClient</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: OccupancyGridClient</h1>
+    <h1 class="page-title">Class: OccupancyGridSrvClient</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="global.html#ROS2D">ROS2D</a>.</span>
     
-    OccupancyGridClient
+    OccupancyGridSrvClient
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="OccupancyGridClient"><span class="type-signature"></span>new OccupancyGridClient<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="OccupancyGridSrvClient"><span class="type-signature"></span>new OccupancyGridSrvClient<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,7 +49,7 @@
     
     
     <div class="description">
-        A map that listens to a given occupancy grid topic.
+        A static map that receives from map_server.
 
 Emits the following events:
   * 'change' - there was an update or change in the map
@@ -99,9 +99,8 @@ Emits the following events:
             
             <td class="description last">object with following keys:
   * ros - the ROSLIB.Ros connection handle
-  * topic (optional) - the map topic to listen to
-  * rootObject (optional) - the root object to add this marker to
-  * continuous (optional) - if the map should be continuously loaded (e.g., for SLAM)</td>
+  * service (optional) - the map topic to listen to, like '/static_map'
+  * rootObject (optional) - the root object to add this marker to</td>
         </tr>
 	
 	
@@ -132,7 +131,7 @@ Emits the following events:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="OccupancyGridClient.js.html">maps/OccupancyGridClient.js</a>, line 18
+        <a href="OccupancyGridSrvClient.js.html">maps/OccupancyGridSrvClient.js</a>, line 18
     </li></ul></dd>
     
     
