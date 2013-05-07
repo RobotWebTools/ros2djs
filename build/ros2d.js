@@ -3,13 +3,12 @@
  */
 
 var ROS2D = ROS2D || {
-  REVISION : '1'
+  REVISION : '2'
 };
 
 // convert the given global Stage coordinates to ROS coordinates
 createjs.Stage.prototype.globalToRos = function(x, y) {
-  var rosX = x / this.scaleX;
-  // change Y direction
+  var rosX = (x - this.x) / this.scaleX;
   var rosY = (this.y - y) / this.scaleY;
   return {
     x : rosX,
@@ -102,10 +101,16 @@ ROS2D.OccupancyGrid = function(options) {
   createjs.Bitmap.call(this, canvas);
   // change Y direction
   this.y = -this.height * message.info.resolution;
+  
+  // scale the image
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
   this.width *= this.scaleX;
   this.height *= this.scaleY;
+
+  // set the pose
+  this.x += this.pose.position.x;
+  this.y -= this.pose.position.y;
 };
 ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
 
@@ -164,6 +169,57 @@ ROS2D.OccupancyGridClient = function(options) {
   });
 };
 ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
+
+/**
+ * @author Jihoon Lee- jihoonlee.in@gmail.com
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A static map that receives from map_server.
+ *
+ * Emits the following events:
+ *   * 'change' - there was an update or change in the map
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * service (optional) - the map topic to listen to, like '/static_map'
+ *   * rootObject (optional) - the root object to add this marker to
+ */
+ROS2D.OccupancyGridSrvClient = function(options) {
+  var that = this;
+  options = options || {};
+  var ros = options.ros;
+  var service = options.service || '/static_map';
+  this.rootObject = options.rootObject || new createjs.Container();
+
+  // current grid that is displayed
+  this.currentGrid = null;
+
+  // Setting up to the service
+  var rosService = new ROSLIB.Service({
+    ros : ros,
+    name : service,
+    serviceType : 'nav_msgs/GetMap',
+    compression : 'png'
+  });
+
+  rosService.callService(new ROSLIB.ServiceRequest(),function(response) {
+    // check for an old map
+    if (that.currentGrid) {
+      that.rootObject.removeChild(that.currentGrid);
+    }
+
+    that.currentGrid = new ROS2D.OccupancyGrid({
+      message : response.map
+    });
+    that.rootObject.addChild(that.currentGrid);
+
+    that.emit('change', that.currentGrid);
+  });
+};
+ROS2D.OccupancyGridSrvClient.prototype.__proto__ = EventEmitter2.prototype;
 
 /**
  * @author Russell Toris - rctoris@wpi.edu
@@ -286,6 +342,23 @@ ROS2D.Viewer.prototype.addObject = function(object) {
  * @param height - the height to scale to in meters
  */
 ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
+  // store the actual offset in the ROS coordinate system
+  var tmpY = this.height - (this.scene.y * this.scene.scaleY);
   this.scene.scaleX = this.width / width;
   this.scene.scaleY = this.height / height;
+  // reset the offset
+  this.scene.x = (this.scene.x * this.scene.scaleX);
+  this.scene.y -= (tmpY * this.scene.scaleY) - tmpY;
+};
+
+/**
+ * Shift the main view of the canvas by the given amount. This is based on the
+ * ROS coordinate system. That is, Y is opposite that of a traditional canvas.
+ *
+ * @param x - the amount to shift by in the x direction in meters
+ * @param y - the amount to shift by in the y direction in meters
+ */
+ROS2D.Viewer.prototype.shift = function(x, y) {
+  this.scene.x -= (x * this.scene.scaleX);
+  this.scene.y += (y * this.scene.scaleY);
 };

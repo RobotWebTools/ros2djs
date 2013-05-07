@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<script type="text/javascript" src="../include/EaselJS/easeljs.js"></script>
-<script type="text/javascript" src="../include/EventEmitter2/eventemitter2.js"></script>
-<script type="text/javascript" src="../include/roslibjs/roslib.js"></script>
-<script type="text/javascript" src="../build/ros2d.js"></script>
+<script src="../include/EaselJS/easeljs.js"></script>
+<script src="../include/EventEmitter2/eventemitter2.js"></script>
+<script src="../include/roslibjs/roslib.js"></script>
+<script src="../build/ros2d.js"></script>
 
-<script type="text/javascript" type="text/javascript">
+<script>
   /**
    * Setup all visualization elements when the page is loaded. 
    */
@@ -30,8 +30,9 @@
       rootObject : viewer.scene
     });
     // Scale the canvas to fit to the map
-    gridClient.on('change', function(){
+    gridClient.on('change', function() {
       viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
+      viewer.shift(gridClient.currentGrid.pose.position.x, gridClient.currentGrid.pose.position.y);
     });
   }
 </script>
