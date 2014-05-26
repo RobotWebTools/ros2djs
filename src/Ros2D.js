@@ -10,9 +10,19 @@ var ROS2D = ROS2D || {
 createjs.Stage.prototype.globalToRos = function(x, y) {
   var rosX = (x - this.x) / this.scaleX;
   var rosY = (this.y - y) / this.scaleY;
-  return {
+  return new ROSLIB.Vector3({
     x : rosX,
     y : rosY
+  });
+};
+
+// convert the given ROS coordinates to global Stage coordinates
+createjs.Stage.prototype.rosToGlobal = function(pos) {
+  var x = pos.x * this.scaleX + this.x;
+  var y = pos.y * this.scaleY + this.y;
+  return {
+    x : x,
+    y : y
   };
 };
 
@@ -23,15 +33,5 @@ createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
   var q1 = orientation.x;
   var q2 = orientation.y;
   var q3 = orientation.z;
-  var theta = Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (Math.pow(q2, 2) + Math.pow(q3, 2)));
-
-  // convert to degrees
-  var deg = theta * (180.0 / Math.PI);
-  if (deg >= 0 && deg <= 180) {
-    deg += 270;
-  } else {
-    deg -= 90;
-  }
-
-  return -deg;
+  return -Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3)) * 180.0 / Math.PI;
 };
