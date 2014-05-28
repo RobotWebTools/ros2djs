@@ -92,12 +92,9 @@ ROS2D.NavGoal.prototype.startGoalSelection = function(pos) {
 ROS2D.NavGoal.prototype.orientGoalSelection = function(pos) {
 	this.goalOrientationMarker.scaleX = 1.0 / this.stage.scaleX;
 	this.goalOrientationMarker.scaleY = 1.0 / this.stage.scaleY;
-//	this.goalOrientationMarker.x = pos.x;
-//	this.goalOrientationMarker.y = -pos.y;
 	var dx = pos.x - this.goalStartPos.x;
 	var dy = pos.y - this.goalStartPos.y;
-	var theta  = Math.atan2(-dy, dx) * (180.0 / Math.PI);
-	this.goalOrientationMarker.rotation = theta;
+	this.goalOrientationMarker.rotation = -Math.atan2(dy, dx) * 180.0 / Math.PI;
 };
 
 /**
@@ -112,7 +109,10 @@ ROS2D.NavGoal.prototype.endGoalSelection = function(pos) {
 	
 	var dx = pos.x - this.goalStartPos.x;
 	var dy = pos.y - this.goalStartPos.y;
-	var theta  = Math.atan2(dy, dx);
+//	var theta  = Math.atan2(dy, dx);
+	// Get angle from orientation marker, so that the goal always matches with the marker
+	// convert to radians and counter clock wise
+	var theta = -this.goalOrientationMarker.rotation * Math.PI / 180.0;
 	var qz =  Math.sin(theta/2.0);
 	var qw =  Math.cos(theta/2.0);
 	var quat = new ROSLIB.Quaternion({
