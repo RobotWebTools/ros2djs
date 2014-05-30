@@ -69,68 +69,70 @@
 			plannedPath.initScale();
 			robotTrace.initScale();
 			navGoal.initScale();
+			registerMouseHandlers();
 		});
 
 
-		// Setup mouse event handlers
-		var mouseDown = false;
-		var zoomKey = false;
-		var panKey = false;
-		var startPos = new ROSLIB.Vector3();
-		viewer.scene.addEventListener('stagemousedown', function(event) {
-			if (event.nativeEvent.ctrlKey === true) {
-				zoomKey = true;
-				zoomView.startZoom(event.stageX, event.stageY);
-			}
-			else if (event.nativeEvent.shiftKey === true) {
-				panKey = true;
-				panView.startPan(event.stageX, event.stageY);
-			}
-			else {
-				var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
-				navGoal.startGoalSelection(pos);
-			}
-			startPos.x = event.stageX;
-			startPos.y = event.stageY;
-			mouseDown = true;
-		});
-
-		viewer.scene.addEventListener('stagemousemove', function(event) {
-			if (mouseDown === true) {
-				if (zoomKey === true) {
-					var dy = event.stageY - startPos.y;
-					var zoom = 1 + 10*Math.abs(dy) / viewer.scene.canvas.clientHeight;
-					if (dy < 0)
-						zoom = 1 / zoom;
-					zoomView.zoom(zoom);
+		function registerMouseHandlers() {
+			// Setup mouse event handlers
+			var mouseDown = false;
+			var zoomKey = false;
+			var panKey = false;
+			var startPos = new ROSLIB.Vector3();
+			viewer.scene.addEventListener('stagemousedown', function(event) {
+				if (event.nativeEvent.ctrlKey === true) {
+					zoomKey = true;
+					zoomView.startZoom(event.stageX, event.stageY);
 				}
-				else if (panKey === true) {
-					panView.pan(event.stageX, event.stageY);
+				else if (event.nativeEvent.shiftKey === true) {
+					panKey = true;
+					panView.startPan(event.stageX, event.stageY);
 				}
 				else {
 					var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
-					navGoal.orientGoalSelection(pos);
+					navGoal.startGoalSelection(pos);
 				}
-			}
-		});
+				startPos.x = event.stageX;
+				startPos.y = event.stageY;
+				mouseDown = true;
+			});
 
-		viewer.scene.addEventListener('stagemouseup', function(event) {
-			if (mouseDown === true) {
-				if (zoomKey === true) {
-					zoomKey = false;
+			viewer.scene.addEventListener('stagemousemove', function(event) {
+				if (mouseDown === true) {
+					if (zoomKey === true) {
+						var dy = event.stageY - startPos.y;
+						var zoom = 1 + 10*Math.abs(dy) / viewer.scene.canvas.clientHeight;
+						if (dy < 0)
+							zoom = 1 / zoom;
+						zoomView.zoom(zoom);
+					}
+					else if (panKey === true) {
+						panView.pan(event.stageX, event.stageY);
+					}
+					else {
+						var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+						navGoal.orientGoalSelection(pos);
+					}
 				}
-				else if (panKey === true) {
-					panKey = false;
-				}
-				else {
-					var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
-					var goalPose = navGoal.endGoalSelection(pos);
-					navGoal.sendGoal(goalPose);
-				}
-				mouseDown = false;
-			}
-		});
+			});
 
+			viewer.scene.addEventListener('stagemouseup', function(event) {
+				if (mouseDown === true) {
+					if (zoomKey === true) {
+						zoomKey = false;
+					}
+					else if (panKey === true) {
+						panKey = false;
+					}
+					else {
+						var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+						var goalPose = navGoal.endGoalSelection(pos);
+						navGoal.sendGoal(goalPose);
+					}
+					mouseDown = false;
+				}
+			});
+		}
 	}
 </script>
 </head>
@@ -147,6 +149,7 @@
 		<li><tt>rosrun map_server map_server /opt/ros/groovy/share/rail_maps/maps/ilab.pgm
 				0.05</tt></li>
 		<li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt></li>
+		<li><tt>rosrun robot_pose_publisher robot_pose_publisher</tt></li>
 	</ol>
 	<div id="map"></div>
 </body>
