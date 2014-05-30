@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script src="../include/EaselJS/easeljs.js"></script>
+<script src="../include/EventEmitter2/eventemitter2.js"></script>
+<script src="../include/roslibjs/roslib.js"></script>
+<script src="../build/ros2d.js"></script>
+
+<script>
+	/**
+	 * Setup all visualization elements when the page is loaded. 
+	 */
+	function init() {
+		// Connect to ROS.
+		var ros = new ROSLIB.Ros({
+			url : 'ws://localhost:9090'
+		});
+
+		// Create the main viewer.
+		var viewer = new ROS2D.Viewer({
+			divID : 'map',
+			width : 600,
+			height : 600
+		});
+
+		// Add zoom to the viewer.
+		var zoomView = new ROS2D.ZoomView({
+			rootObject : viewer.scene
+		});
+		// Add panning to the viewer.
+		var panView = new ROS2D.PanView({
+			rootObject : viewer.scene
+		});
+
+		// Setup the map client.
+		var gridClient = new ROS2D.OccupancyGridClient({
+			ros : ros,
+			rootObject : viewer.scene
+		});
+
+		// Add planned path
+		var plannedPath = new ROS2D.NavPath({
+			ros : ros,
+			rootObject : viewer.scene,
+			pathTopic : '/plan'
+		});
+
+		// Add robot pose and trace
+		var robotTrace = new ROS2D.PoseAndTrace({
+			ros : ros,
+			rootObject : viewer.scene,
+			poseTopic : '/robot_pose',
+			withTrace : true,
+			maxTraceLength : 200
+		});
+
+		// Add navigation goal
+		var navGoal = new ROS2D.NavGoal({
+			ros : ros,
+			rootObject : viewer.scene,
+			actionTopic : '/move_base'
+		});
+
+		// Scale the canvas to fit to the map
+		gridClient.on('change', function() {
+			viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
+			viewer.shift(gridClient.currentGrid.pose.position.x, gridClient.currentGrid.pose.position.y);
+			plannedPath.initScale();
+			robotTrace.initScale();
+			navGoal.initScale();
+			registerMouseHandlers();
+		});
+
+
+		function registerMouseHandlers() {
+			// Setup mouse event handlers
+			var mouseDown = false;
+			var zoomKey = false;
+			var panKey = false;
+			var startPos = new ROSLIB.Vector3();
+			viewer.scene.addEventListener('stagemousedown', function(event) {
+				if (event.nativeEvent.ctrlKey === true) {
+					zoomKey = true;
+					zoomView.startZoom(event.stageX, event.stageY);
+				}
+				else if (event.nativeEvent.shiftKey === true) {
+					panKey = true;
+					panView.startPan(event.stageX, event.stageY);
+				}
+				else {
+					var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+					navGoal.startGoalSelection(pos);
+				}
+				startPos.x = event.stageX;
+				startPos.y = event.stageY;
+				mouseDown = true;
+			});
+
+			viewer.scene.addEventListener('stagemousemove', function(event) {
+				if (mouseDown === true) {
+					if (zoomKey === true) {
+						var dy = event.stageY - startPos.y;
+						var zoom = 1 + 10*Math.abs(dy) / viewer.scene.canvas.clientHeight;
+						if (dy < 0)
+							zoom = 1 / zoom;
+						zoomView.zoom(zoom);
+					}
+					else if (panKey === true) {
+						panView.pan(event.stageX, event.stageY);
+					}
+					else {
+						var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+						navGoal.orientGoalSelection(pos);
+					}
+				}
+			});
+
+			viewer.scene.addEventListener('stagemouseup', function(event) {
+				if (mouseDown === true) {
+					if (zoomKey === true) {
+						zoomKey = false;
+					}
+					else if (panKey === true) {
+						panKey = false;
+					}
+					else {
+						var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+						var goalPose = navGoal.endGoalSelection(pos);
+						navGoal.sendGoal(goalPose);
+					}
+					mouseDown = false;
+				}
+			});
+		}
+	}
+</script>
+</head>
+
+<body onload="init()">
+	<h1>Simple Map Example</h1>
+	<p>
+		Run the following commands in the terminal then refresh this page. This will load a map from the
+		<tt>ros-groovy-rail-maps</tt>
+		package.
+	</p>
+	<ol>
+		<li><tt>roscore</tt></li>
+		<li><tt>rosrun map_server map_server /opt/ros/groovy/share/rail_maps/maps/ilab.pgm
+				0.05</tt></li>
+		<li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt></li>
+		<li><tt>rosrun robot_pose_publisher robot_pose_publisher</tt></li>
+	</ol>
+	<div id="map"></div>
+</body>
+</html>

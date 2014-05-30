@@ -16,7 +16,7 @@
     options = options || {};
     var size = options.size || 10;
     var cellSize = options.cellSize || 0.1;
-    var lineWidth = options.lineWidth || 0.001; 
+    var lineWidth = options.lineWidth || 0.001;
     // draw the arrow
     var graphics = new createjs.Graphics();
     // line width
