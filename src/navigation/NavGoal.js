@@ -104,12 +104,9 @@ ROS2D.NavGoal.prototype.orientGoalSelection = function(pos) {
  *
  * @returns the goal pose (ROSLIB.Pose)
  */
-ROS2D.NavGoal.prototype.endGoalSelection = function(pos) {
+ROS2D.NavGoal.prototype.endGoalSelection = function() {
 	this.goalOrientationMarker.visible = false;
-	
-	var dx = pos.x - this.goalStartPos.x;
-	var dy = pos.y - this.goalStartPos.y;
-//	var theta  = Math.atan2(dy, dx);
+
 	// Get angle from orientation marker, so that the goal always matches with the marker
 	// convert to radians and counter clock wise
 	var theta = -this.goalOrientationMarker.rotation * Math.PI / 180.0;
