@@ -24,7 +24,9 @@ ROS2D.OccupancyGridClient = function(options) {
   this.rootObject = options.rootObject || new createjs.Container();
 
   // current grid that is displayed
-  this.currentGrid = null;
+  // create an empty shape to start with, so that the order remains correct.
+  this.currentGrid = new createjs.Shape();
+  this.rootObject.addChild(this.currentGrid);
 
   // subscribe to the topic
   var rosTopic = new ROSLIB.Topic({
@@ -33,16 +35,24 @@ ROS2D.OccupancyGridClient = function(options) {
     messageType : 'nav_msgs/OccupancyGrid',
     compression : 'png'
   });
+
   rosTopic.subscribe(function(message) {
     // check for an old map
+    var index = null;
     if (that.currentGrid) {
+      index = that.rootObject.getChildIndex(that.currentGrid);
       that.rootObject.removeChild(that.currentGrid);
     }
 
     that.currentGrid = new ROS2D.OccupancyGrid({
       message : message
     });
-    that.rootObject.addChild(that.currentGrid);
+    if (index !== null) {
+      that.rootObject.addChildAt(that.currentGrid, index);
+    }
+    else {
+      that.rootObject.addChild(that.currentGrid);
+    }
 
     that.emit('change');
 
