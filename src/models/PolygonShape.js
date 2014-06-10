@@ -21,8 +21,8 @@ ROS2D.PolygonMarker = function(options) {
 	this.pointSize = options.pointSize || 10;
 	this.pointColor = options.pointColor || createjs.Graphics.getRGB(255, 0, 0, 0.66);
 	this.fillColor = options.pointColor || createjs.Graphics.getRGB(0, 255, 0, 0.33);
-	this.lineClickCallBack = options.lineClickCallBack;
-	this.pointClickCallBack = options.pointClickCallBack;
+	this.lineCallBack = options.lineCallBack;
+	this.pointCallBack = options.pointCallBack;
 	
 	// Array of point shapes
 //	this.points = [];
@@ -36,7 +36,6 @@ ROS2D.PolygonMarker = function(options) {
 	
 //	// Container with all the lines and points
 //	this.container = new createjs.Container();
-	
 	createjs.Container.call(this);
 	
 	this.addChild(this.fillShape);
@@ -55,14 +54,14 @@ ROS2D.PolygonMarker.prototype.createLineShape = function(startPoint, endPoint) {
 	
 	var that = this;
 	line.addEventListener('mousedown', function(event) {
-		console.log('mousedown! line ' + that.lineContainer.getChildIndex(event.target));
-		this.lineClickCallBack(event, that.lineContainer.getChildIndex(event.target));
+		that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
 	});
 	
 	return line;
 };
 
 ROS2D.PolygonMarker.prototype.editLineShape = function(line, startPoint, endPoint) {
+	line.graphics.clear();
 	line.graphics.setStrokeStyle(this.lineSize);
 	line.graphics.beginStroke(this.lineColor);
 	line.graphics.moveTo(startPoint.x, startPoint.y);
@@ -79,8 +78,7 @@ ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 	
 	var that = this;
 	point.addEventListener('mousedown', function(event) {
-		console.log('mousedown! point ' + that.pointContainer.getChildIndex(event.target));
-		this.pointClickCallBack(event, that.pointContainer.getChildIndex(event.target));
+		that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
 	});
 	
 	return point;
@@ -117,7 +115,7 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 		point = this.pointContainer.getChildAt(index);
 	}
 	point.x = newPos.x;
-	point.y = newPos.y;
+	point.y = -newPos.y;
 	
 	if (this.lineContainer.getNumChildren() > 0) {
 		// line before moved point
@@ -131,6 +129,8 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 			this.editLineShape(line2, point, this.pointContainer.getChildAt(index+1));
 		}
 	}
+	
+	this.drawFill();
 };
 
 ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
@@ -150,7 +150,7 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
 	var ye = this.pointContainer.getChildAt(index+1).y;
 	var xh = (xs+xe)/2.0;
 	var yh = (ys+ye)/2.0;
-	var pos = new ROSLIB.Vector3({ x:xh, y:yh });
+	var pos = new ROSLIB.Vector3({ x:xh, y:-yh });
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChildAt(point, index+1);
 //	this.points.splice(index+1, 0, point);
@@ -192,18 +192,12 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 	this.pointContainer.removeChildAt(index);
 //	this.points.splice(index, 1);
 	
-/*
-	if (this.pointContainer.getNumChildren() === 1) {
-		this.pointContainer.removeChildAt(0);
-//		this.points.pop();
-	}
-*/
 	this.drawFill();
 };
 
 ROS2D.PolygonMarker.prototype.drawFill = function() {
 	var numPoints = this.pointContainer.getNumChildren();
-	if (numPoints > 0) {
+	if (numPoints > 2) {
 		var g = this.fillShape.graphics;
 		g.clear();
 		g.setStrokeStyle(0);
@@ -216,6 +210,9 @@ ROS2D.PolygonMarker.prototype.drawFill = function() {
 		g.closePath();
 		g.endFill();
 		g.endStroke();
+	}
+	else {
+		this.fillShape.graphics.clear();
 	}
 };
 
