@@ -164,12 +164,16 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 		
 	}
 	else if (numPoints < 3) {
+		// 2 points: remove all lines
 		this.lineContainer.removeAllChildren();
 	}
 	else {
 		// 3 or more points: change line before point to remove, remove line after point to remove
-		this.editLineShape(this.lineContainer.getChildAt((index-1+numPoints)%numPoints), this.pointContainer.getChildAt((index-1+numPoints)%numPoints), this.pointContainer.getChildAt((index+1)%numPoints));
-		
+		this.editLineShape(
+			this.lineContainer.getChildAt((index-1+numPoints)%numPoints),
+			this.pointContainer.getChildAt((index-1+numPoints)%numPoints),
+			this.pointContainer.getChildAt((index+1)%numPoints)
+		);
 		this.lineContainer.removeChildAt(index);
 	}
 	this.pointContainer.removeChildAt(index);
