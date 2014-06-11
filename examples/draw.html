@@ -19,8 +19,10 @@
 			height : 200
 		});
 
+		// Callback functions when there is mouse interaction with the polygon
 		var clickedPolygon = false;
 		var selectedPointIndex = null;
+
 		var pointCallBack = function(type, event, index) {
 			if (type === 'mousedown') {
 				if (event.nativeEvent.shiftKey === true) {
@@ -42,16 +44,21 @@
 			clickedPolygon = true;
 		}
 
+		// Create the polygon
 		var polygon = new ROS2D.PolygonMarker({
 			lineColor : createjs.Graphics.getRGB(100, 100, 255, 1),
 			pointCallBack : pointCallBack,
 			lineCallBack : lineCallBack
 		});
 	
+		// Add the polygon to the viewer
 		viewer.scene.addChild(polygon);
+
+		// Event listeners for mouse interaction with the stage
 		viewer.scene.mouseMoveOutside = false; // doesn't seem to work
 
 		viewer.scene.addEventListener('stagemousemove', function(event) {
+			// Move point when it's dragged
 			if (selectedPointIndex !== null) {
 				var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
 				polygon.movePoint(selectedPointIndex, pos);
@@ -59,6 +66,7 @@
 		});
 	
 		viewer.scene.addEventListener('stagemouseup', function(event) {
+			// Add point when not clicked on the polygon
 			if (selectedPointIndex !== null) {
 				selectedPointIndex = null;
 			}
@@ -77,7 +85,7 @@
 	<h1>Simple Draw Example</h1>
 	<p>
 		Click on the canvas to draw.<br>
-		Shift-click a line to split it, ctrl-click a point to remove it.<br>
+		Ctrl-click a line to split it, shift-click a point to remove it.<br>
 		Points are draggable.
 	</p>
 	<div id="map"></div>

@@ -12,6 +12,9 @@
  *   * lineColor (optional) - the createjs color of the lines
  *   * pointSize (optional) - the size of the points
  *   * pointColor (optional) - the createjs color of the points
+ *   * fillColor (optional) - the createjs color to fill the polygon
+ *   * lineCallBack (optional) - callback function for mouse interaction with a line
+ *   * pointCallBack (optional) - callback function for mouse interaction with a point
  */
 ROS2D.PolygonMarker = function(options) {
 //	var that = this;
@@ -34,8 +37,7 @@ ROS2D.PolygonMarker = function(options) {
 	
 	this.fillShape = new createjs.Shape();
 	
-//	// Container with all the lines and points
-//	this.container = new createjs.Container();
+	// Container with all the lines and points
 	createjs.Container.call(this);
 	
 	this.addChild(this.fillShape);
@@ -43,7 +45,9 @@ ROS2D.PolygonMarker = function(options) {
 	this.addChild(this.pointContainer);
 };
 
-
+/**
+ * Internal use only
+ */
 ROS2D.PolygonMarker.prototype.createLineShape = function(startPoint, endPoint) {
 	var line = new createjs.Shape();
 //	line.graphics.setStrokeStyle(this.strokeSize);
@@ -54,12 +58,17 @@ ROS2D.PolygonMarker.prototype.createLineShape = function(startPoint, endPoint) {
 	
 	var that = this;
 	line.addEventListener('mousedown', function(event) {
-		that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
+		if (that.lineCallBack !== null && typeof that.lineCallBack !== 'undefined') {
+			that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
+		}
 	});
 	
 	return line;
 };
 
+/**
+ * Internal use only
+ */
 ROS2D.PolygonMarker.prototype.editLineShape = function(line, startPoint, endPoint) {
 	line.graphics.clear();
 	line.graphics.setStrokeStyle(this.lineSize);
@@ -68,7 +77,9 @@ ROS2D.PolygonMarker.prototype.editLineShape = function(line, startPoint, endPoin
 	line.graphics.lineTo(endPoint.x, endPoint.y);
 };
 
-
+/**
+ * Internal use only
+ */
 ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 	var point = new createjs.Shape();
 	point.graphics.beginFill(this.pointColor);
@@ -78,31 +89,101 @@ ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 	
 	var that = this;
 	point.addEventListener('mousedown', function(event) {
-		that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
+		if (that.pointCallBack !== null && typeof that.pointCallBack !== 'undefined') {
+			that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
+		}
 	});
 	
 	return point;
 };
 
-
+/**
+ * Adds a point to the polygon
+ *
+ * @param position of type ROSLIB.Vector3
+ */
 ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
-	if (this.pointContainer.getNumChildren() < 1) {
-		var pointStart = this.createPointShape(pos);
-		//	this.points.push(pointStart);
-		this.pointContainer.addChild(pointStart);
+	var point = this.createPointShape(pos);
+	this.pointContainer.addChild(point);
+	var numPoints = this.pointContainer.getNumChildren();
+	
+	// 0 points -> 1 point, 0 lines
+	// 1 point  -> 2 points, lines: add line between previous and new point, add line between new point and first point
+	// 2 points -> 3 points, 3 lines: change last line, add line between new point and first point
+	// 3 points -> 4 points, 4 lines: change last line, add line between new point and first point
+	// etc
+	
+	if (numPoints < 2) {
+		// Now 1 point
 	}
-	else {
-		var point = this.createPointShape(pos);
-//		this.points.push(point);
-		this.pointContainer.addChild(point);
-		var line = this.createLineShape(this.pointContainer.getChildAt(this.pointContainer.getNumChildren()-2), point);
-//		this.lines.push(line);
+	else if (numPoints < 3) {
+		// Now 2 points: add line between previous and new point
+		var line = this.createLineShape(this.pointContainer.getChildAt(numPoints-2), point);
 		this.lineContainer.addChild(line);
+	}
+	if (numPoints > 2) {
+		// Now 3 or more points: change last line
+		this.editLineShape(this.lineContainer.getChildAt(numPoints-2), this.pointContainer.getChildAt(numPoints-2), point);
+	}
+	if (numPoints > 1) {
+		// Now 2 or more points: add line between new point and first point
+		var lineEnd = this.createLineShape(point, this.pointContainer.getChildAt(0));
+		this.lineContainer.addChild(lineEnd);
 	}
 	
 	this.drawFill();
 };
 
+/**
+ * Removes a point from the polygon
+ *
+ * @param obj either an index (integer) or a point shape of the polygon
+ */
+ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
+	var index;
+//	var point;
+	if (obj instanceof createjs.Shape) {
+		index = this.pointContainer.getChildIndex(obj);
+//		point = obj;
+	}
+	else {
+		index = obj;
+//		point = this.pointContainer.getChildAt(index);
+	}
+	
+	// 0 points -> 0 points, 0 lines
+	// 1 point  -> 0 points, 0 lines
+	// 2 points -> 1 point,  0 lines: remove all lines
+	// 3 points -> 2 points, 2 lines: change line before point to remove, remove line after point to remove
+	// 4 points -> 3 points, 3 lines: change line before point to remove, remove line after point to remove
+	// etc
+	
+	var numPoints = this.pointContainer.getNumChildren();
+	
+	if (numPoints < 2) {
+		
+	}
+	else if (numPoints < 3) {
+		this.lineContainer.removeAllChildren();
+	}
+	else {
+		// 3 or more points: change line before point to remove, remove line after point to remove
+		this.editLineShape(this.lineContainer.getChildAt((index-1+numPoints)%numPoints), this.pointContainer.getChildAt((index-1+numPoints)%numPoints), this.pointContainer.getChildAt((index+1)%numPoints));
+		
+		this.lineContainer.removeChildAt(index);
+	}
+	this.pointContainer.removeChildAt(index);
+//	this.points.splice(index, 1);
+	
+	this.drawFill();
+};
+
+/**
+ * Moves a point of the polygon
+ *
+ * @param obj either an index (integer) or a point shape of the polygon
+ * @param position of type ROSLIB.Vector3
+ */
 ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 	var index;
 	var point;
@@ -117,22 +198,25 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 	point.x = newPos.x;
 	point.y = -newPos.y;
 	
-	if (this.lineContainer.getNumChildren() > 0) {
+	var numPoints = this.pointContainer.getNumChildren();
+	if (numPoints > 1) {
 		// line before moved point
-		if (index > 0) {
-			var line1 = this.lineContainer.getChildAt(index-1);
-			this.editLineShape(line1, this.pointContainer.getChildAt(index-1), point);
-		}
+		var line1 = this.lineContainer.getChildAt((index-1+numPoints)%numPoints);
+		this.editLineShape(line1, this.pointContainer.getChildAt((index-1+numPoints)%numPoints), point);
+		
 		// line after moved point
-		if (index < this.pointContainer.getNumChildren()-1) {
-			var line2 = this.lineContainer.getChildAt(index);
-			this.editLineShape(line2, point, this.pointContainer.getChildAt(index+1));
-		}
+		var line2 = this.lineContainer.getChildAt(index);
+		this.editLineShape(line2, point, this.pointContainer.getChildAt((index+1)%numPoints));
 	}
 	
 	this.drawFill();
 };
 
+/**
+ * Splits a line of the polygon: inserts a point at the center of the line
+ *
+ * @param obj either an index (integer) or a line shape of the polygon
+ */
 ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
 	var index;
 	var line;
@@ -144,57 +228,33 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
 		index = obj;
 		line = this.lineContainer.getChildAt(index);
 	}
+	var numPoints = this.pointContainer.getNumChildren();
 	var xs = this.pointContainer.getChildAt(index).x;
 	var ys = this.pointContainer.getChildAt(index).y;
-	var xe = this.pointContainer.getChildAt(index+1).x;
-	var ye = this.pointContainer.getChildAt(index+1).y;
+	var xe = this.pointContainer.getChildAt((index+1)%numPoints).x;
+	var ye = this.pointContainer.getChildAt((index+1)%numPoints).y;
 	var xh = (xs+xe)/2.0;
 	var yh = (ys+ye)/2.0;
 	var pos = new ROSLIB.Vector3({ x:xh, y:-yh });
+	
+	// Add a point in the center of the line to split
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChildAt(point, index+1);
-//	this.points.splice(index+1, 0, point);
-	var lineNew = this.createLineShape(point, this.pointContainer.getChildAt(index+2));
+	++numPoints;
+	
+	// Add a line between the new point and the end of the line to split
+	var lineNew = this.createLineShape(point, this.pointContainer.getChildAt((index+2)%numPoints));
 	this.lineContainer.addChildAt(lineNew, index+1);
-//	this.lines.splice(index+1, 0, line);
+
+	// Set the endpoint of the line to split to the new point
 	this.editLineShape(line, this.pointContainer.getChildAt(index), point);
 	
 	this.drawFill();
 };
 
-ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
-	var index;
-//	var point;
-	if (obj instanceof createjs.Shape) {
-		index = this.pointContainer.getChildIndex(obj);
-//		point = obj;
-	}
-	else {
-		index = obj;
-//		point = this.pointContainer.getChildAt(index);
-	}
-	
-	if (this.lineContainer.getNumChildren() > 0) {
-		if (index === 0) {
-			this.lineContainer.removeChildAt(0);
-//			this.lines.shift(;
-		}
-		else if (index === this.pointContainer.getNumChildren()-1) {
-			this.lineContainer.removeChildAt(index-1);
-//			this.lines.pop();
-		}
-		else {
-			this.lineContainer.removeChildAt(index);
-//			this.lines.splice(index, 1);
-			this.editLineShape(this.lineContainer.getChildAt(index-1), this.pointContainer.getChildAt(index-1), this.pointContainer.getChildAt(index+1));
-		}
-	}
-	this.pointContainer.removeChildAt(index);
-//	this.points.splice(index, 1);
-	
-	this.drawFill();
-};
-
+/**
+ * Internal use only
+ */
 ROS2D.PolygonMarker.prototype.drawFill = function() {
 	var numPoints = this.pointContainer.getNumChildren();
 	if (numPoints > 2) {
