@@ -34,6 +34,11 @@ ROS2D.PathShape = function(options) {
 	createjs.Shape.call(this, this.graphics);
 };
 
+/**
+ * Set the path to draw
+ *
+ * @param path of type nav_msgs/Path
+ */
 ROS2D.PathShape.prototype.setPath = function(path) {
 	this.graphics.clear();
 	if (path !== null && typeof path !== 'undefined') {
