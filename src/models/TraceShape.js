@@ -43,7 +43,11 @@ ROS2D.TraceShape = function(options) {
 	createjs.Shape.call(this, this.graphics);
 };
 
-
+/**
+ * Adds a pose to the trace and updates the graphics
+ *
+ * @param pose of type ROSLIB.Pose
+ */
 ROS2D.TraceShape.prototype.addPose = function(pose) {
 	var last = this.poses.length-1;
 	if (last < 0) {
@@ -65,6 +69,9 @@ ROS2D.TraceShape.prototype.addPose = function(pose) {
 	}
 };
 
+/**
+ * Removes front pose and updates the graphics
+ */
 ROS2D.TraceShape.prototype.popFront = function() {
 	if (this.poses.length > 0) {
 		this.poses.shift();
