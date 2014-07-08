@@ -2,3 +2,5 @@
 .settings
 .vagrant
 node_modules
+build
+doc
