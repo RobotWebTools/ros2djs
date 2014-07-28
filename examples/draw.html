@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script src="../include/EaselJS/easeljs.js"></script>
+<script src="../include/EventEmitter2/eventemitter2.js"></script>
+<script src="../include/roslibjs/roslib.js"></script>
+<script src="../build/ros2d.js"></script>
+
+<script>
+	/**
+	 * Setup all visualization elements when the page is loaded. 
+	 */
+	function init() {
+		// Create the main viewer.
+		var viewer = new ROS2D.Viewer({
+			divID : 'map',
+			width : 300,
+			height : 200
+		});
+
+		// Callback functions when there is mouse interaction with the polygon
+		var clickedPolygon = false;
+		var selectedPointIndex = null;
+
+		var pointCallBack = function(type, event, index) {
+			if (type === 'mousedown') {
+				if (event.nativeEvent.shiftKey === true) {
+					polygon.remPoint(index);
+				}
+				else {
+					selectedPointIndex = index;
+				}
+			}
+			clickedPolygon = true;
+		};
+
+		var lineCallBack = function(type, event, index) {
+			if (type === 'mousedown') {
+				if (event.nativeEvent.ctrlKey === true) {
+					polygon.splitLine(index);
+				}
+			}
+			clickedPolygon = true;
+		}
+
+		// Create the polygon
+		var polygon = new ROS2D.PolygonMarker({
+			lineColor : createjs.Graphics.getRGB(100, 100, 255, 1),
+			pointCallBack : pointCallBack,
+			lineCallBack : lineCallBack
+		});
+	
+		// Add the polygon to the viewer
+		viewer.scene.addChild(polygon);
+
+		// Event listeners for mouse interaction with the stage
+		viewer.scene.mouseMoveOutside = false; // doesn't seem to work
+
+		viewer.scene.addEventListener('stagemousemove', function(event) {
+			// Move point when it's dragged
+			if (selectedPointIndex !== null) {
+				var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+				polygon.movePoint(selectedPointIndex, pos);
+			}
+		});
+	
+		viewer.scene.addEventListener('stagemouseup', function(event) {
+			// Add point when not clicked on the polygon
+			if (selectedPointIndex !== null) {
+				selectedPointIndex = null;
+			}
+			else if (viewer.scene.mouseInBounds === true && clickedPolygon === false) {
+				var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
+				polygon.addPoint(pos);			
+			}
+			clickedPolygon = false;
+		});
+
+	}
+</script>
+</head>
+
+<body onload="init()">
+	<h1>Simple Draw Example</h1>
+	<p>
+		Click on the canvas to draw.<br>
+		Ctrl-click a line to split it, shift-click a point to remove it.<br>
+		Points are draggable.
+	</p>
+	<div id="map"></div>
+</body>
+</html>
