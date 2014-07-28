@@ -18,7 +18,7 @@ ros2djs depends on:
 
 [EventEmitter2](https://github.com/hij1nx/EventEmitter2). The current supported version is 0.4.11. The current supported version can be found [in this project](include/EventEmitter2/eventemitter2.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js)) | ([min](http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.min.js))
 
-[EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.6.0. The current supported version can be found [in this project](include/EaselJS/easeljs.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js))
+[EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.7.1. The current supported version can be found [in this project](include/EaselJS/easeljs.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js))
 
 [roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is 0.8.0. The current supported version can be found [in this project](include/roslibjs/roslib.js) or on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/r6/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/r6/roslib.min.js))
 

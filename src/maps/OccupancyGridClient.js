@@ -27,6 +27,8 @@ ROS2D.OccupancyGridClient = function(options) {
   // create an empty shape to start with, so that the order remains correct.
   this.currentGrid = new createjs.Shape();
   this.rootObject.addChild(this.currentGrid);
+  // work-around for a bug in easeljs -- needs a second object to render correctly
+  this.rootObject.addChild(new ROS2D.Grid({size:0}));
 
   // subscribe to the topic
   var rosTopic = new ROSLIB.Topic({
