@@ -1,3 +1,6 @@
+2014-08-07 - **0.5.0**
+ * Added ImageMap type [(rctoris)](https://github.com/rctoris/)
+
 2014-07-28 - **0.4.0**
  * Updated to easeljs 0.7.1 [(rctoris)](https://github.com/rctoris/)
  * Fixed Chrome rendering bug [(rctoris)](https://github.com/rctoris/)
