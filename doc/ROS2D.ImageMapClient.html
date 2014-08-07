@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: PanView</title>
+    <title>JSDoc: Class: ImageMapClient</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: PanView</h1>
+    <h1 class="page-title">Class: ImageMapClient</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="global.html#ROS2D">ROS2D</a>.</span>
     
-    PanView
+    ImageMapClient
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="PanView"><span class="type-signature"></span>new PanView<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ImageMapClient"><span class="type-signature"></span>new ImageMapClient<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,7 +49,10 @@
     
     
     <div class="description">
-        Adds panning to a view
+        A image map is a PNG image scaled to fit to the dimensions of a OccupancyGrid.
+
+Emits the following events:
+  * 'change' - there was an update or change in the map
     </div>
     
 
@@ -95,7 +98,10 @@
             
             
             <td class="description last">object with following keys:
-  * rootObject (optional) - the root object to apply panning to</td>
+  * ros - the ROSLIB.Ros connection handle
+  * topic (optional) - the map meta data topic to listen to
+  * image - the image URL to load
+  * rootObject (optional) - the root object to add this marker to</td>
         </tr>
 	
 	
@@ -126,7 +132,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PanView.js.html">visualization/PanView.js</a>, line 12
+        <a href="ImageMapClient.js.html">maps/ImageMapClient.js</a>, line 18
     </li></ul></dd>
     
     

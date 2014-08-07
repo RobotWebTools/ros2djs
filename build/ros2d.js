@@ -3,7 +3,7 @@
  */
 
 var ROS2D = ROS2D || {
-  REVISION : '0.4.0'
+  REVISION : '0.5.0'
 };
 
 // convert the given global Stage coordinates to ROS coordinates
@@ -37,6 +37,103 @@ createjs.Stage.prototype.rosQuaternionToGlobalTheta = function(orientation) {
   // Canvas rotation is clock wise and in degrees
   return -Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3)) * 180.0 / Math.PI;
 };
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * An image map is a PNG image scaled to fit to the dimensions of a OccupancyGrid.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * message - the occupancy grid map meta data message
+ *   * image - the image URL to load
+ */
+ROS2D.ImageMap = function(options) {
+  options = options || {};
+  var message = options.message;
+  var image = options.image;
+
+  // save the metadata we need
+  this.pose = new ROSLIB.Pose({
+    position : message.origin.position,
+    orientation : message.origin.orientation
+  });
+
+  // set the size
+  this.width = message.width;
+  this.height = message.height;
+
+  // create the bitmap
+  createjs.Bitmap.call(this, image);
+  // change Y direction
+  this.y = -this.height * message.resolution;
+
+  // scale the image
+  this.scaleX = message.resolution;
+  this.scaleY = message.resolution;
+  this.width *= this.scaleX;
+  this.height *= this.scaleY;
+
+  // set the pose
+  this.x += this.pose.position.x;
+  this.y -= this.pose.position.y;
+};
+ROS2D.ImageMap.prototype.__proto__ = createjs.Bitmap.prototype;
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A image map is a PNG image scaled to fit to the dimensions of a OccupancyGrid.
+ *
+ * Emits the following events:
+ *   * 'change' - there was an update or change in the map
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * topic (optional) - the map meta data topic to listen to
+ *   * image - the image URL to load
+ *   * rootObject (optional) - the root object to add this marker to
+ */
+ROS2D.ImageMapClient = function(options) {
+  var that = this;
+  options = options || {};
+  var ros = options.ros;
+  var topic = options.topic || '/map_metadata';
+  this.image = options.image;
+  this.rootObject = options.rootObject || new createjs.Container();
+
+  // create an empty shape to start with
+  this.currentImage = new createjs.Shape();
+
+  // subscribe to the topic
+  var rosTopic = new ROSLIB.Topic({
+    ros : ros,
+    name : topic,
+    messageType : 'nav_msgs/MapMetaData'
+  });
+
+  rosTopic.subscribe(function(message) {
+    // we only need this once
+    rosTopic.unsubscribe();
+
+    // create the image
+    that.currentImage = new ROS2D.ImageMap({
+      message : message,
+      image : that.image
+    });
+    that.rootObject.addChild(that.currentImage);
+    // work-around for a bug in easeljs -- needs a second object to render correctly
+    that.rootObject.addChild(new ROS2D.Grid({size:1}));
+
+    that.emit('change');
+  });
+};
+ROS2D.ImageMapClient.prototype.__proto__ = EventEmitter2.prototype;
 
 /**
  * @author Russell Toris - rctoris@wpi.edu
@@ -146,7 +243,7 @@ ROS2D.OccupancyGridClient = function(options) {
   this.currentGrid = new createjs.Shape();
   this.rootObject.addChild(this.currentGrid);
   // work-around for a bug in easeljs -- needs a second object to render correctly
-  this.rootObject.addChild(new ROS2D.Grid({size:0}));
+  this.rootObject.addChild(new ROS2D.Grid({size:1}));
 
   // subscribe to the topic
   var rosTopic = new ROSLIB.Topic({
