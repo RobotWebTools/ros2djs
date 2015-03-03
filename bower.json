@@ -1,5 +1,5 @@
 {
-  "name": "ros2dlib",
+  "name": "ros2djs",
   "description": "ros2djs is a 2D Visualization Library for use with the ROS JavaScript Libraries. ros2djs is developed as part of the Robot Web Tools effort.",
   "version": "0.6.0",
   "homepage": "https://github.com/RobotWebTools/ros2djs",
