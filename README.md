@@ -23,7 +23,7 @@ ros2djs depends on:
 [roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is 0.11.0. The current supported version can be found on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/0.11.0/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/0.11.0/roslib.min.js))
 
 ### Build
-Checkout [utils/README.md](utils/README.md) for details on building.
+Checkout [CONTRIBUTING.md](CONTRIBUTING.md) for details on building.
 
 ### License
 ros2djs is released with a BSD license. For full terms and conditions, see the [LICENSE](LICENSE) file.
