@@ -1,4 +1,4 @@
-2014-08-07 - **0.6.0**
+2015-03-09 - **0.6.0**
  * Bower support added [(aisch)](https://github.com/aisch/)
 
 2014-08-07 - **0.5.0**
