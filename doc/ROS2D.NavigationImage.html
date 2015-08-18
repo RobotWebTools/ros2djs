@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ZoomView</title>
+    <title>JSDoc: Class: NavigationImage</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: ZoomView</h1>
+    <h1 class="page-title">Class: NavigationImage</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="global.html#ROS2D">ROS2D</a>.</span>
     
-    ZoomView
+    NavigationImage
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="ZoomView"><span class="type-signature"></span>new ZoomView<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="NavigationImage"><span class="type-signature"></span>new NavigationImage<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,7 +49,7 @@
     
     
     <div class="description">
-        Adds zooming to a view
+        A navigation image that can be used to display orientation.
     </div>
     
 
@@ -95,8 +95,9 @@
             
             
             <td class="description last">object with following keys:
-  * rootObject (optional) - the root object to apply zoom to
-  * minScale (optional) - minimum scale to set to preserve precision</td>
+  * size (optional) - the size of the marker
+  * image - the image to use as a marker
+  * pulse (optional) - if the marker should "pulse" over time</td>
         </tr>
 	
 	
@@ -127,7 +128,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ZoomView.js.html">visualization/ZoomView.js</a>, line 13
+        <a href="NavigationImage.js.html">models/NavigationImage.js</a>, line 14
     </li></ul></dd>
     
     

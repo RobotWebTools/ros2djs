@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: visualization/ZoomView.js</title>
+    <title>JSDoc: Source: models/NavigationImage.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: visualization/ZoomView.js</h1>
+    <h1 class="page-title">Source: models/NavigationImage.js</h1>
     
     
 
@@ -26,60 +26,71 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * @author Bart van Vliet - bart@dobots.nl
+ * @author Inigo Gonzalez - ingonza85@gmail.com
  */
 
 /**
- * Adds zooming to a view
+ * A navigation image that can be used to display orientation.
  *
  * @constructor
  * @param options - object with following keys:
- *   * rootObject (optional) - the root object to apply zoom to
- *   * minScale (optional) - minimum scale to set to preserve precision
+ *   * size (optional) - the size of the marker
+ *   * image - the image to use as a marker
+ *   * pulse (optional) - if the marker should "pulse" over time
  */
-ROS2D.ZoomView = function(options) {
-	options = options || {};
-	this.rootObject = options.rootObject;
-	this.minScale = options.minScale || 0.001;
-	
-	// get a handle to the stage
-	if (this.rootObject instanceof createjs.Stage) {
-		this.stage = this.rootObject;
-	}
-	else {
-		this.stage = this.rootObject.getStage();
-	}
-	
-	this.center = new ROSLIB.Vector3();
-	this.startShift = new ROSLIB.Vector3();
-	this.startScale = new ROSLIB.Vector3();
+ROS2D.NavigationImage = function(options) {
+  var that = this;
+  options = options || {};
+  var size = options.size || 10;
+  var image_url = options.image;
+  var pulse = options.pulse;
+  var alpha = options.alpha || 1;
+
+  var originals = {};
+
+  var paintImage = function(){
+    createjs.Bitmap.call(that, image);
+    var scale = calculateScale(size);
+    that.alpha = alpha;
+    that.scaleX = scale;
+    that.scaleY = scale;
+    that.regY = that.image.height/2;
+    that.regX = that.image.width/2;
+    originals['rotation'] = that.rotation;
+    Object.defineProperty( that, 'rotation', {
+      get: function(){ return originals['rotation'] + 90; },
+      set: function(value){ originals['rotation'] = value; }
+    });
+    if (pulse) {
+      // have the model "pulse"
+      var growCount = 0;
+      var growing = true;
+      var SCALE_SIZE = 1.020;
+      createjs.Ticker.addEventListener('tick', function() {
+        if (growing) {
+          that.scaleX *= SCALE_SIZE;
+          that.scaleY *= SCALE_SIZE;
+          growing = (++growCount &lt; 10);
+        } else {
+          that.scaleX /= SCALE_SIZE;
+          that.scaleY /= SCALE_SIZE;
+          growing = (--growCount &lt; 0);
+        }
+      });
+    }
+  };
+
+   var calculateScale = function(_size){
+      return _size / image.width;
+  };
+
+  var image = new Image();
+  image.onload = paintImage;
+  image.src = image_url;
+
 };
 
-
-ROS2D.ZoomView.prototype.startZoom = function(centerX, centerY) {
-	this.center.x = centerX;
-	this.center.y = centerY;
-	this.startShift.x = this.stage.x;
-	this.startShift.y = this.stage.y;
-	this.startScale.x = this.stage.scaleX;
-	this.startScale.y = this.stage.scaleY;
-};
-
-ROS2D.ZoomView.prototype.zoom = function(zoom) {
-	// Make sure scale doesn't become too small
-	if (this.startScale.x*zoom &lt; this.minScale) {
-		zoom = this.minScale/this.startScale.x;
-	}
-	if (this.startScale.y*zoom &lt; this.minScale) {
-		zoom = this.minScale/this.startScale.y;
-	}
-	
-	this.stage.scaleX = this.startScale.x*zoom;
-	this.stage.scaleY = this.startScale.y*zoom;
-	
-	this.stage.x = this.startShift.x - (this.center.x-this.startShift.x) * (this.stage.scaleX/this.startScale.x - 1);
-	this.stage.y = this.startShift.y - (this.center.y-this.startShift.y) * (this.stage.scaleY/this.startScale.y - 1);
-};
+ROS2D.NavigationImage.prototype.__proto__ = createjs.Bitmap.prototype;
 </code></pre>
         </article>
     </section>
