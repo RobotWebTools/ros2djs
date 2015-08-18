@@ -1,3 +1,6 @@
+2015-08-15 - **0.7.0**
+ * Added Navigation Image [(haas85)](https://github.com/haas85/)
+
 2015-03-09 - **0.6.0**
  * Bower support added [(aisch)](https://github.com/aisch/)
 
