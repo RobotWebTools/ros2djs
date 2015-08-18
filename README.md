@@ -20,7 +20,7 @@ ros2djs depends on:
 
 [EaselJS](https://github.com/CreateJS/EaselJS/). The current supported version is 0.7.1. The current supported version can be found on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/EaselJS/0.7.1/easeljs.js)) | ([min](http://cdn.robotwebtools.org/EaselJS/0.7.1/easeljs.min.js))
 
-[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is 0.13.0. The current supported version can be found on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/0.13.0/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/0.13.0/roslib.min.js))
+[roslibjs](https://github.com/RobotWebTools/roslibjs). The current supported version is 0.14.0. The current supported version can be found on the Robot Web Tools CDN: ([full](http://cdn.robotwebtools.org/roslibjs/0.14.0/roslib.js)) | ([min](http://cdn.robotwebtools.org/roslibjs/0.14.0/roslib.min.js))
 
 ### Build
 Checkout [CONTRIBUTING.md](CONTRIBUTING.md) for details on building.
