@@ -57,7 +57,7 @@ ROS2D.Viewer.prototype.addObject = function(object) {
  */
 ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
   // restore to values before shifting, if ocurred
-  this.scene.x = typeof this.scene.x_prev_shit !== 'undefined' ? this.scene.x_prev_shit : this.scene.x;
+  this.scene.x = typeof this.scene.x_prev_shift !== 'undefined' ? this.scene.x_prev_shift : this.scene.x;
   this.scene.y = typeof this.scene.y_prev_shift !== 'undefined' ? this.scene.y_prev_shift : this.scene.y;
   
   // save scene scaling
@@ -74,7 +74,7 @@ ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
  */
 ROS2D.Viewer.prototype.shift = function(x, y) {
   // save current offset
-  this.scene.x_prev_shit = this.scene.x;
+  this.scene.x_prev_shift = this.scene.x;
   this.scene.y_prev_shift = this.scene.y;
 
   // shift scene by scaling the desired offset
