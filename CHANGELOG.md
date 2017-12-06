@@ -1,25 +1,32 @@
-2015-08-15 - **0.7.0**
- * Added Navigation Image [(haas85)](https://github.com/haas85/)
+## Change Log
 
-2015-03-09 - **0.6.0**
- * Bower support added [(aisch)](https://github.com/aisch/)
+### 0.8.0 (2017/12/06 10:56 +00:00)
+- [#31](https://github.com/RobotWebTools/ros2djs/pull/31) Update Viewer.js (@DLu)
+- [#30](https://github.com/RobotWebTools/ros2djs/pull/30) Fix continuous map updates (@guilhermelawless)
 
-2014-08-07 - **0.5.0**
- * Added ImageMap type [(rctoris)](https://github.com/rctoris/)
+### 0.7.0 (2015/08/18 18:36 +00:00)
+- [#28](https://github.com/RobotWebTools/ros2djs/pull/28) Added Navigation Image (@haas85)
 
-2014-07-28 - **0.4.0**
- * Updated to easeljs 0.7.1 [(rctoris)](https://github.com/rctoris/)
- * Fixed Chrome rendering bug [(rctoris)](https://github.com/rctoris/)
+### 0.6.0 (2015/03/09 14:08 +00:00)
+- [#26](https://github.com/RobotWebTools/ros2djs/pull/26) add bower support (@aisch)
+- [#24](https://github.com/RobotWebTools/ros2djs/pull/24) Update CHANGELOG.md (@rbonghi)
 
-2014-07-28 - **0.3.0**
- * Polygon shape added [(vliedel)](https://github.com/vliedel/)
- * Rotated navigation arrow, such that it points east at 0 rotation [(vliedel)](https://github.com/vliedel/)
- * Grid added [(rbonghi)](https://github.com/rbonghi/)
+### 0.3.0 (2014/07/28 15:21 +00:00)
+- [#21](https://github.com/RobotWebTools/ros2djs/pull/21) added panning, zooming, extra models, fixed rotations (@vliedel)
+- [#19](https://github.com/RobotWebTools/ros2djs/pull/19) Grid.js static grid (@rbonghi)
 
-2013-05-07 - **r2**
- * Added static map service client [(jihoonl)](https://github.com/jihoonl/)
- * OccupancyGrid now sets correct translation offset [(rctoris)](https://github.com/rctoris/)
- * Updated to roslibjs r6 [(rctoris)](https://github.com/rctoris/)
+### r2 (2013/05/07 17:32 +00:00)
+- [#18](https://github.com/RobotWebTools/ros2djs/pull/18) r2 release (@rctoris, @jihoonl)
+- [#17](https://github.com/RobotWebTools/ros2djs/pull/17) r3-devel started (@rctoris)
+- [#16](https://github.com/RobotWebTools/ros2djs/pull/16) map now sets correct pose (@rctoris)
+- [#15](https://github.com/RobotWebTools/ros2djs/pull/15) Cleanup for travis build (@rctoris)
+- [#14](https://github.com/RobotWebTools/ros2djs/pull/14) OccupancyGridSrvClient which uses service to receive a static map (@jihoonl)
+- [#12](https://github.com/RobotWebTools/ros2djs/pull/12) r2-devel started (@rctoris)
+- [#11](https://github.com/RobotWebTools/ros2djs/pull/11) r1 release (@rctoris)
 
-2013-04-15 - **r1**
- * Initial development of ROS2D [(rctoris)](https://github.com/rctoris/)
+### r1 (2013/04/15 21:31 +00:00)
+- [#10](https://github.com/RobotWebTools/ros2djs/pull/10) Grunt (@rctoris)
+- [#8](https://github.com/RobotWebTools/ros2djs/pull/8) +1 (@rctoris)
+- [#7](https://github.com/RobotWebTools/ros2djs/pull/7) rebuilt ros2djs (@jihoonl)
+- [#6](https://github.com/RobotWebTools/ros2djs/pull/6) Scene improvements and OccupancyGrids (@rctoris)
+- [#1](https://github.com/RobotWebTools/ros2djs/pull/1) initial import of existing libraries (@rctoris)
