@@ -1,7 +1,7 @@
 {
   "name": "ros2d",
   "description": "(BOWER IS DEPRECATING! Please use npm version of ros2d). 2D Visualization Library for use with the ROS JavaScript Libraries",
-  "version": "0.7.0-SNAPSHOT",
+  "version": "0.9.0",
   "homepage": "https://github.com/RobotWebTools/ros2djs",
   "authors": [
     "Russell Toris<rctoris@wpi.edu>",

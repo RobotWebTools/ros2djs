@@ -1,6 +1,7 @@
 ## Change Log
 
-### 0.8.0 (2017/12/06 10:56 +00:00)
+### 0.8.0 (2017/12/06 11:04 +00:00)
+- [#33](https://github.com/RobotWebTools/ros2djs/pull/33) Mark 0.8.0, create PR based changelog. Add deprecation sign in bowers.json (#33) (@jihoonl)
 - [#31](https://github.com/RobotWebTools/ros2djs/pull/31) Update Viewer.js (@DLu)
 - [#30](https://github.com/RobotWebTools/ros2djs/pull/30) Fix continuous map updates (@guilhermelawless)
 
