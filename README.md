@@ -1,5 +1,6 @@
-ros2djs [![Build Status](https://api.travis-ci.org/RobotWebTools/ros2djs.png)](https://travis-ci.org/RobotWebTools/ros2djs)
-=======
+# ros2djs
+
+[![CI](https://github.com/RobotWebTools/ros2djs/actions/workflows/main.yml/badge.svg)](https://github.com/RobotWebTools/ros2djs/actions/workflows/main.yml)
 
 #### 2D Visualization Library for use with the ROS JavaScript Libraries
 For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check out some [working demos](http://robotwebtools.org/).

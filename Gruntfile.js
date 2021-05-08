@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       build: {
         configFile: './test/karma.conf.js',
         singleRun: true,
-        browsers: ['PhantomJS']
+        browsers: process.env.CI ? ['FirefoxHeadless'] : ['Firefox'] // jshint ignore:line
       }
     },
     uglify: {
