@@ -29,7 +29,7 @@ jobs:
     - name: Build
       run: npm run build
     - uses: stefanzweifel/git-auto-commit-action@v4
-      if: ${{ github.event_name == 'push' && github.ref == 'develop' && matrix.node_version == 16 }}
+      if: ${{ github.event_name == 'push' && endsWith(github.ref, 'develop') && matrix.node_version == 16 }}
       with:
         commit_message: Update Build
         file_pattern: 'build/*.js'
