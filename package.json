@@ -25,7 +25,8 @@
   },
   "scripts": {
     "build": "grunt build",
-    "doc": "grunt doc"
+    "doc": "grunt doc",
+    "publish": "npm run build"
   },
   "keywords": [
     "ROS",
