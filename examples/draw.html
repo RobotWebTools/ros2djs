@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 
 <script src="https://static.robotwebtools.org/EaselJS/current/easeljs.js"></script>
-<script src="https://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-<script src="https://static.robotwebtools.org/roslibjs/current/roslib.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/eventemitter2@6.4/lib/eventemitter2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
 <script src="../build/ros2d.js"></script>
 
 <script>
@@ -51,7 +51,7 @@
 			pointCallBack : pointCallBack,
 			lineCallBack : lineCallBack
 		});
-	
+
 		// Add the polygon to the viewer
 		viewer.scene.addChild(polygon);
 
@@ -65,7 +65,7 @@
 				polygon.movePoint(selectedPointIndex, pos);
 			}
 		});
-	
+
 		viewer.scene.addEventListener('stagemouseup', function(event) {
 			// Add point when not clicked on the polygon
 			if (selectedPointIndex !== null) {
@@ -73,7 +73,7 @@
 			}
 			else if (viewer.scene.mouseInBounds === true && clickedPolygon === false) {
 				var pos = viewer.scene.globalToRos(event.stageX, event.stageY);
-				polygon.addPoint(pos);			
+				polygon.addPoint(pos);
 			}
 			clickedPolygon = false;
 		});

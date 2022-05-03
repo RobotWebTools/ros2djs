@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 
 <script src="https://static.robotwebtools.org/EaselJS/current/easeljs.js"></script>
-<script src="https://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-<script src="https://static.robotwebtools.org/roslibjs/current/roslib.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/eventemitter2@6.4/lib/eventemitter2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
 <script src="../build/ros2d.js"></script>
 
 <script>
@@ -29,7 +29,7 @@
     var gridClient = new ROS2D.OccupancyGridClient({
       ros : ros,
       rootObject : viewer.scene,
-      // Use this property in case of continuous updates			
+      // Use this property in case of continuous updates
       continuous: true
     });
     // Scale the canvas to fit to the map
