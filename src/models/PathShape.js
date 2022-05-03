@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -16,10 +17,10 @@ ROS2D.PathShape = function(options) {
 	var path = options.path;
 	this.strokeSize = options.strokeSize || 3;
 	this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
-	
+
 	// draw the line
 	this.graphics = new createjs.Graphics();
-	
+
 	if (path !== null && typeof path !== 'undefined') {
 		this.graphics.setStrokeStyle(this.strokeSize);
 		this.graphics.beginStroke(this.strokeColor);
@@ -29,7 +30,7 @@ ROS2D.PathShape = function(options) {
 		}
 		this.graphics.endStroke();
 	}
-	
+
 	// create the shape
 	createjs.Shape.call(this, this.graphics);
 };

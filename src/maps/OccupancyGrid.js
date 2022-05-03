@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
  */
 
@@ -63,7 +64,7 @@ ROS2D.OccupancyGrid = function(options) {
   createjs.Bitmap.call(this, canvas);
   // change Y direction
   this.y = -this.height * message.info.resolution;
-  
+
   // scale the image
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
