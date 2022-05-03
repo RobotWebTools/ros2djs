@@ -24,7 +24,8 @@
     "url": "https://github.com/RobotWebTools/ros2djs/issues"
   },
   "scripts": {
-    "build": "grunt build"
+    "build": "grunt build",
+    "doc": "grunt doc"
   },
   "keywords": [
     "ROS",
