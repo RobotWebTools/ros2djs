@@ -4,6 +4,9 @@
  */
 
 var ROS2D = ROS2D || {
+  /**
+   * @description Library version
+   */
   REVISION : '0.9.0'
 };
 
