@@ -7,7 +7,7 @@ var ROS2D = ROS2D || {
   /**
    * @description Library version
    */
-  REVISION : '0.9.0'
+  REVISION : '0.10.0'
 };
 
 // convert the given global Stage coordinates to ROS coordinates
