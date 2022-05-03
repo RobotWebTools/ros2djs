@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
  */
 
@@ -59,7 +60,7 @@ ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
   // restore to values before shifting, if ocurred
   this.scene.x = typeof this.scene.x_prev_shift !== 'undefined' ? this.scene.x_prev_shift : this.scene.x;
   this.scene.y = typeof this.scene.y_prev_shift !== 'undefined' ? this.scene.y_prev_shift : this.scene.y;
-  
+
   // save scene scaling
   this.scene.scaleX = this.width / width;
   this.scene.scaleY = this.height / height;

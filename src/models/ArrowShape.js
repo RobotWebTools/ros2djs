@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -22,18 +23,18 @@ ROS2D.ArrowShape = function(options) {
 	var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
 	var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
 	var pulse = options.pulse;
-	
+
 	// draw the arrow
 	var graphics = new createjs.Graphics();
-	
+
 	var headLen = size / 3.0;
 	var headWidth = headLen * 2.0 / 3.0;
-	
+
 	graphics.setStrokeStyle(strokeSize);
 	graphics.beginStroke(strokeColor);
 	graphics.moveTo(0, 0);
 	graphics.lineTo(size-headLen, 0);
-	
+
 	graphics.beginFill(fillColor);
 	graphics.moveTo(size, 0);
 	graphics.lineTo(size-headLen, headWidth / 2.0);
@@ -41,10 +42,10 @@ ROS2D.ArrowShape = function(options) {
 	graphics.closePath();
 	graphics.endFill();
 	graphics.endStroke();
-	
+
 	// create the shape
 	createjs.Shape.call(this, graphics);
-	
+
 	// check if we are pulsing
 	if (pulse) {
 		// have the model "pulse"

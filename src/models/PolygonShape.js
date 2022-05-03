@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -26,20 +27,20 @@ ROS2D.PolygonMarker = function(options) {
 	this.fillColor = options.pointColor || createjs.Graphics.getRGB(0, 255, 0, 0.33);
 	this.lineCallBack = options.lineCallBack;
 	this.pointCallBack = options.pointCallBack;
-	
+
 	// Array of point shapes
 //	this.points = [];
 	this.pointContainer = new createjs.Container();
-	
+
 	// Array of line shapes
 //	this.lines = [];
 	this.lineContainer = new createjs.Container();
-	
+
 	this.fillShape = new createjs.Shape();
-	
+
 	// Container with all the lines and points
 	createjs.Container.call(this);
-	
+
 	this.addChild(this.fillShape);
 	this.addChild(this.lineContainer);
 	this.addChild(this.pointContainer);
@@ -55,14 +56,14 @@ ROS2D.PolygonMarker.prototype.createLineShape = function(startPoint, endPoint) {
 //	line.graphics.moveTo(startPoint.x, startPoint.y);
 //	line.graphics.lineTo(endPoint.x, endPoint.y);
 	this.editLineShape(line, startPoint, endPoint);
-	
+
 	var that = this;
 	line.addEventListener('mousedown', function(event) {
 		if (that.lineCallBack !== null && typeof that.lineCallBack !== 'undefined') {
 			that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
 		}
 	});
-	
+
 	return line;
 };
 
@@ -86,14 +87,14 @@ ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 	point.graphics.drawCircle(0, 0, this.pointSize);
 	point.x = pos.x;
 	point.y = -pos.y;
-	
+
 	var that = this;
 	point.addEventListener('mousedown', function(event) {
 		if (that.pointCallBack !== null && typeof that.pointCallBack !== 'undefined') {
 			that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
 		}
 	});
-	
+
 	return point;
 };
 
@@ -106,13 +107,13 @@ ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChild(point);
 	var numPoints = this.pointContainer.getNumChildren();
-	
+
 	// 0 points -> 1 point, 0 lines
 	// 1 point  -> 2 points, lines: add line between previous and new point, add line between new point and first point
 	// 2 points -> 3 points, 3 lines: change last line, add line between new point and first point
 	// 3 points -> 4 points, 4 lines: change last line, add line between new point and first point
 	// etc
-	
+
 	if (numPoints < 2) {
 		// Now 1 point
 	}
@@ -130,7 +131,7 @@ ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
 		var lineEnd = this.createLineShape(point, this.pointContainer.getChildAt(0));
 		this.lineContainer.addChild(lineEnd);
 	}
-	
+
 	this.drawFill();
 };
 
@@ -150,18 +151,18 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 		index = obj;
 //		point = this.pointContainer.getChildAt(index);
 	}
-	
+
 	// 0 points -> 0 points, 0 lines
 	// 1 point  -> 0 points, 0 lines
 	// 2 points -> 1 point,  0 lines: remove all lines
 	// 3 points -> 2 points, 2 lines: change line before point to remove, remove line after point to remove
 	// 4 points -> 3 points, 3 lines: change line before point to remove, remove line after point to remove
 	// etc
-	
+
 	var numPoints = this.pointContainer.getNumChildren();
-	
+
 	if (numPoints < 2) {
-		
+
 	}
 	else if (numPoints < 3) {
 		// 2 points: remove all lines
@@ -178,7 +179,7 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 	}
 	this.pointContainer.removeChildAt(index);
 //	this.points.splice(index, 1);
-	
+
 	this.drawFill();
 };
 
@@ -201,18 +202,18 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 	}
 	point.x = newPos.x;
 	point.y = -newPos.y;
-	
+
 	var numPoints = this.pointContainer.getNumChildren();
 	if (numPoints > 1) {
 		// line before moved point
 		var line1 = this.lineContainer.getChildAt((index-1+numPoints)%numPoints);
 		this.editLineShape(line1, this.pointContainer.getChildAt((index-1+numPoints)%numPoints), point);
-		
+
 		// line after moved point
 		var line2 = this.lineContainer.getChildAt(index);
 		this.editLineShape(line2, point, this.pointContainer.getChildAt((index+1)%numPoints));
 	}
-	
+
 	this.drawFill();
 };
 
@@ -240,19 +241,19 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
 	var xh = (xs+xe)/2.0;
 	var yh = (ys+ye)/2.0;
 	var pos = new ROSLIB.Vector3({ x:xh, y:-yh });
-	
+
 	// Add a point in the center of the line to split
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChildAt(point, index+1);
 	++numPoints;
-	
+
 	// Add a line between the new point and the end of the line to split
 	var lineNew = this.createLineShape(point, this.pointContainer.getChildAt((index+2)%numPoints));
 	this.lineContainer.addChildAt(lineNew, index+1);
 
 	// Set the endpoint of the line to split to the new point
 	this.editLineShape(line, this.pointContainer.getChildAt(index), point);
-	
+
 	this.drawFill();
 };
 

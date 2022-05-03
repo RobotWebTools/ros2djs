@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -21,24 +22,24 @@ ROS2D.TraceShape = function(options) {
 	this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
 	this.maxPoses = options.maxPoses || 100;
 	this.minDist = options.minDist || 0.05;
-	
+
 	// Store minDist as the square of it
 	this.minDist = this.minDist*this.minDist;
-	
+
 	// Array of the poses
 	// TODO: do we need this?
 	this.poses = [];
-	
+
 	// Create the graphics
 	this.graphics = new createjs.Graphics();
 	this.graphics.setStrokeStyle(this.strokeSize);
 	this.graphics.beginStroke(this.strokeColor);
-	
+
 	// Add first pose if given
 	if (pose !== null && typeof pose !== 'undefined') {
 		this.poses.push(pose);
 	}
-	
+
 	// Create the shape
 	createjs.Shape.call(this, this.graphics);
 };

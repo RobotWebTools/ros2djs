@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -14,7 +15,7 @@ ROS2D.ZoomView = function(options) {
 	options = options || {};
 	this.rootObject = options.rootObject;
 	this.minScale = options.minScale || 0.001;
-	
+
 	// get a handle to the stage
 	if (this.rootObject instanceof createjs.Stage) {
 		this.stage = this.rootObject;
@@ -22,7 +23,7 @@ ROS2D.ZoomView = function(options) {
 	else {
 		this.stage = this.rootObject.getStage();
 	}
-	
+
 	this.center = new ROSLIB.Vector3();
 	this.startShift = new ROSLIB.Vector3();
 	this.startScale = new ROSLIB.Vector3();
@@ -46,10 +47,10 @@ ROS2D.ZoomView.prototype.zoom = function(zoom) {
 	if (this.startScale.y*zoom < this.minScale) {
 		zoom = this.minScale/this.startScale.y;
 	}
-	
+
 	this.stage.scaleX = this.startScale.x*zoom;
 	this.stage.scaleY = this.startScale.y*zoom;
-	
+
 	this.stage.x = this.startShift.x - (this.center.x-this.startShift.x) * (this.stage.scaleX/this.startScale.x - 1);
 	this.stage.y = this.startShift.y - (this.center.y-this.startShift.y) * (this.stage.scaleY/this.startScale.y - 1);
 };

@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Bart van Vliet - bart@dobots.nl
  */
 
@@ -12,7 +13,7 @@
 ROS2D.PanView = function(options) {
 	options = options || {};
 	this.rootObject = options.rootObject;
-	
+
 	// get a handle to the stage
 	if (this.rootObject instanceof createjs.Stage) {
 		this.stage = this.rootObject;
@@ -20,7 +21,7 @@ ROS2D.PanView = function(options) {
 	else {
 		this.stage = this.rootObject.getStage();
 	}
-	
+
 	this.startPos = new ROSLIB.Vector3();
 };
 

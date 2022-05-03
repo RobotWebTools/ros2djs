@@ -1,4 +1,5 @@
 /**
+ * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
  */
 
@@ -37,7 +38,7 @@ ROS2D.NavigationArrow = function(options) {
 
   // create the shape
   createjs.Shape.call(this, graphics);
-  
+
   // check if we are pulsing
   if (pulse) {
     // have the model "pulse"
