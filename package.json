@@ -2,7 +2,7 @@
   "name": "ros2d",
   "homepage": "https://www.robotwebtools.org",
   "description": "2D Visualization Library for use with the ROS JavaScript Libraries",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "license": "BSD-2-Clause",
   "devDependencies": {
     "grunt": "^1.0.0",
