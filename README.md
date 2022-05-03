@@ -12,7 +12,7 @@ This project is released as part of the [Robot Web Tools](http://robotwebtools.o
 ### Usage
 Pre-built files can be found in either [ros2d.js](build/ros2d.js) or [ros2d.min.js](build/ros2d.min.js).
 
-Alternatively, you can use the current release via the Robot Web Tools CDN: ([full](https://static.robotwebtools.org/ros2djs/current/ros2d.js)) | ([min](https://static.robotwebtools.org/ros2djs/current/ros2d.min.js))
+Alternatively, you can use the current release via the [JsDelivr](https://www.jsdelivr.com/) CDN: ([full](https://cdn.jsdelivr.net/npm/ros2d@0/build/ros2d.js)) | ([min](https://cdn.jsdelivr.net/npm/ros2d@0/build/ros2d.min.js))
 
 ### Dependencies
 ros2djs depends on:
