@@ -8,12 +8,12 @@
  * Aims to the left at 0 rotation, as would be expected.
  *
  * @constructor
- * @param options - object with following keys:
- *   * size (optional) - the size of the marker
- *   * strokeSize (optional) - the size of the outline
- *   * strokeColor (optional) - the createjs color for the stroke
- *   * fillColor (optional) - the createjs color for the fill
- *   * pulse (optional) - if the marker should "pulse" over time
+ * @param {Object} options
+ * @param {Int} [options.size] - The size of the marker
+ * @param {Int} [options.strokeSize] - The size of the outline
+ * @param {String} [options.strokeColor] - The createjs color for the stroke
+ * @param {String} [options.fillColor] - The createjs color for the fill
+ * @param {Bool} [options.pulse] - If the marker should "pulse" over time
  */
 ROS2D.ArrowShape = function(options) {
 	var that = this;
