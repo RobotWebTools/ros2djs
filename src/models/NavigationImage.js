@@ -13,7 +13,6 @@
  *   * pulse (optional) - if the marker should "pulse" over time
  */
 ROS2D.NavigationImage = function(options) {
-  var that = this;
   options = options || {};
   var size = options.size || 10;
   var image_url = options.image;
@@ -22,16 +21,19 @@ ROS2D.NavigationImage = function(options) {
 
   var originals = {};
 
-  var paintImage = function(){
-    createjs.Bitmap.call(that, image);
+  var image = new Image();
+
+  createjs.Bitmap.call(this, image);
+
+  var paintImage = function() {
     var scale = calculateScale(size);
-    that.alpha = alpha;
-    that.scaleX = scale;
-    that.scaleY = scale;
-    that.regY = that.image.height/2;
-    that.regX = that.image.width/2;
-    originals['rotation'] = that.rotation;
-    Object.defineProperty( that, 'rotation', {
+    this.alpha = alpha;
+    this.scaleX = scale;
+    this.scaleY = scale;
+    this.regY = this.image.height/2;
+    this.regX = this.image.width/2;
+    originals['rotation'] = this.rotation;
+    Object.defineProperty(this, 'rotation', {
       get: function(){ return originals['rotation'] + 90; },
       set: function(value){ originals['rotation'] = value; }
     });
@@ -42,25 +44,24 @@ ROS2D.NavigationImage = function(options) {
       var SCALE_SIZE = 1.020;
       createjs.Ticker.addEventListener('tick', function() {
         if (growing) {
-          that.scaleX *= SCALE_SIZE;
-          that.scaleY *= SCALE_SIZE;
+          this.scaleX *= SCALE_SIZE;
+          this.scaleY *= SCALE_SIZE;
           growing = (++growCount < 10);
         } else {
-          that.scaleX /= SCALE_SIZE;
-          that.scaleY /= SCALE_SIZE;
+          this.scaleX /= SCALE_SIZE;
+          this.scaleY /= SCALE_SIZE;
           growing = (--growCount < 0);
         }
       });
     }
   };
 
-   var calculateScale = function(_size){
-      return _size / image.width;
-  };
-
-  var image = new Image();
-  image.onload = paintImage;
+  image.onload = paintImage.bind(this);
   image.src = image_url;
+
+  var calculateScale = function(_size){
+    return _size / image.width;
+  };
 
 };
 

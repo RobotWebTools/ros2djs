@@ -17,7 +17,7 @@
  *   * rootObject (optional) - the root object to add this marker to
  */
 ROS2D.ImageMapClient = function(options) {
-  var that = this;
+  EventEmitter2.call(this);
   options = options || {};
   var ros = options.ros;
   var topic = options.topic || '/map_metadata';
@@ -39,15 +39,13 @@ ROS2D.ImageMapClient = function(options) {
     rosTopic.unsubscribe();
 
     // create the image
-    that.currentImage = new ROS2D.ImageMap({
+    this.currentImage = new ROS2D.ImageMap({
       message : message,
-      image : that.image
+      image : this.image
     });
-    that.rootObject.addChild(that.currentImage);
-    // work-around for a bug in easeljs -- needs a second object to render correctly
-    that.rootObject.addChild(new ROS2D.Grid({size:1}));
+    this.rootObject.addChild(this.currentImage);
 
-    that.emit('change');
-  });
+    this.emit('change');
+  }.bind(this));
 };
 ROS2D.ImageMapClient.prototype.__proto__ = EventEmitter2.prototype;

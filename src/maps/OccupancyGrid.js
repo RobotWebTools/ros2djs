@@ -18,23 +18,15 @@ ROS2D.OccupancyGrid = function(options) {
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
 
-  // save the metadata we need
-  this.pose = new ROSLIB.Pose({
-    position : message.info.origin.position,
-    orientation : message.info.origin.orientation
-  });
-
   // set the size
-  this.width = message.info.width;
-  this.height = message.info.height;
-  canvas.width = this.width;
-  canvas.height = this.height;
+  canvas.width = message.info.width;
+  canvas.height = message.info.height;
 
-  var imageData = context.createImageData(this.width, this.height);
-  for ( var row = 0; row < this.height; row++) {
-    for ( var col = 0; col < this.width; col++) {
+  var imageData = context.createImageData(canvas.width, canvas.height);
+  for ( var row = 0; row < canvas.height; row++) {
+    for ( var col = 0; col < canvas.width; col++) {
       // determine the index into the map data
-      var mapI = col + ((this.height - row - 1) * this.width);
+      var mapI = col + ((canvas.height - row - 1) * canvas.width);
       // determine the value
       var data = message.data[mapI];
       var val;
@@ -47,7 +39,7 @@ ROS2D.OccupancyGrid = function(options) {
       }
 
       // determine the index into the image data array
-      var i = (col + (row * this.width)) * 4;
+      var i = (col + (row * canvas.width)) * 4;
       // r
       imageData.data[i] = val;
       // g
@@ -62,6 +54,16 @@ ROS2D.OccupancyGrid = function(options) {
 
   // create the bitmap
   createjs.Bitmap.call(this, canvas);
+
+  this.width = canvas.width;
+  this.height = canvas.height;
+
+  // save the metadata we need
+  this.pose = new ROSLIB.Pose({
+    position : message.info.origin.position,
+    orientation : message.info.origin.orientation
+  });
+
   // change Y direction
   this.y = -this.height * message.info.resolution;
 
