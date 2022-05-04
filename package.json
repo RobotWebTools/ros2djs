@@ -3,18 +3,33 @@
   "homepage": "https://www.robotwebtools.org",
   "description": "2D Visualization Library for use with the ROS JavaScript Libraries",
   "version": "0.10.0",
-  "license": "BSD-2-Clause",
+  "license": "BSD-3-Clause",
+  "main": "./build/ros2d.cjs.js",
+  "module": "./build/ros2d.esm.js",
+  "dependencies": {
+    "easeljs": "^1.0.2",
+    "eventemitter2": "^6.4.0",
+    "roslib": "^1.0.0"
+  },
   "devDependencies": {
+    "@rollup/plugin-buble": "^0.21.0",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "debug": "^4.3.0",
     "grunt": "^1.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^2.0.0",
-    "grunt-contrib-jshint": "^3.0.0",
-    "grunt-contrib-uglify": "^5.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-execute": "git+https://github.com/gruntjs-updater/grunt-execute.git#peerDep",
     "grunt-jsdoc": "^2.1.0",
     "grunt-karma": "^4.0.0",
-    "karma": "^6.3.0"
+    "grunt-pipe": "git+https://github.com/gruntjs-updater/grunt-pipe.git#peerDep",
+    "grunt-shell": "^4.0.0",
+    "gruntify-eslint": "^5.0.0",
+    "karma": "^6.3.0",
+    "rollup": "^2.47.0",
+    "rollup-plugin-filesize": "^9.1.0",
+    "rollup-plugin-terser": "^7.0.0"
   },
   "repository": {
     "type": "git",
@@ -26,14 +41,23 @@
   "scripts": {
     "build": "grunt build",
     "doc": "grunt doc",
+    "lint": "grunt lint",
+    "lint-fix": "grunt lint-fix",
+    "transpile": "DEBUG=* grunt transpile",
+    "test": "grunt test",
     "publish": "npm run build"
   },
   "keywords": [
     "ROS",
     "ros",
+    "roslib",
+    "roslibjs",
     "ros2d",
     "ros2djs",
     "robot"
   ],
-  "author": "Robot Webtools Team <robot-web-tools@googlegroups.com> (http://robotwebtools.org)"
+  "author": "Robot Webtools Team <robot-web-tools@googlegroups.com> (http://robotwebtools.org)",
+  "directories": {
+    "example": "examples"
+  }
 }
