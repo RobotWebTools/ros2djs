@@ -16,6 +16,9 @@ ROS2D.ImageMap = function(options) {
   var message = options.message;
   var image = options.image;
 
+  // create the bitmap
+  createjs.Bitmap.call(this, image);
+
   // save the metadata we need
   this.pose = new ROSLIB.Pose({
     position : message.origin.position,
@@ -26,8 +29,6 @@ ROS2D.ImageMap = function(options) {
   this.width = message.width;
   this.height = message.height;
 
-  // create the bitmap
-  createjs.Bitmap.call(this, image);
   // change Y direction
   this.y = -this.height * message.resolution;
 

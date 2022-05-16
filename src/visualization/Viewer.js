@@ -37,7 +37,7 @@ ROS2D.Viewer = function(options) {
   document.getElementById(divID).appendChild(canvas);
 
   // update at 30fps
-  createjs.Ticker.setFPS(30);
+  createjs.Ticker.framerate = 30;
   createjs.Ticker.addEventListener('tick', this.scene);
 };
 

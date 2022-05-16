@@ -2,4 +2,4 @@
 .vagrant
 node_modules
 doc
-bower_components
+src-esm

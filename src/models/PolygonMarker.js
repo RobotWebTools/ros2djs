@@ -19,6 +19,7 @@
  */
 ROS2D.PolygonMarker = function(options) {
 //	var that = this;
+	createjs.Container.call(this);
 	options = options || {};
 	this.lineSize = options.lineSize || 3;
 	this.lineColor = options.lineColor || createjs.Graphics.getRGB(0, 0, 255, 0.66);
@@ -39,8 +40,6 @@ ROS2D.PolygonMarker = function(options) {
 	this.fillShape = new createjs.Shape();
 
 	// Container with all the lines and points
-	createjs.Container.call(this);
-
 	this.addChild(this.fillShape);
 	this.addChild(this.lineContainer);
 	this.addChild(this.pointContainer);
