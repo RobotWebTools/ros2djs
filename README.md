@@ -6,7 +6,7 @@
 
 For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check out some [working demos](http://robotwebtools.org/).
 
-[JSDoc](http://robotwebtools.org/jsdoc/ros2djs/current/) can be found on the Robot Web Tools website.
+[JSDoc](http://robotwebtools.org/ros2djs) can be found on the Robot Web Tools website.
 
 This project is released as part of the [Robot Web Tools](http://robotwebtools.org/) effort.
 
