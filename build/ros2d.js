@@ -2615,7 +2615,7 @@ var ROS2D = (function (exports, createjs, ROSLIB) {
     	var pose = options.pose;
     	this.strokeSize = options.strokeSize || 3;
     	this.strokeColor = options.strokeColor || createjs__namespace.Graphics.getRGB(0, 0, 0);
-    	this.maxPoses = options.maxPoses || 100;
+    	this.maxPoses = (options.maxPoses || options.maxPoses === 0) ? options.maxPoses : 100;
     	this.minDist = options.minDist || 0.05;
 
     	// Store minDist as the square of it
