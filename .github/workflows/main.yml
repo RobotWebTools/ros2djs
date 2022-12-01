@@ -10,11 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node_version: [14, 16]
+        node_version: [16, 18]
     steps:
     - uses: actions/checkout@v3
       env:
-        TOKEN: "${{ github.event_name == 'push' && endsWith(github.ref, 'develop') && matrix.node_version == 16 && secrets.RWT_BOT_PAT || github.token }}"
+        TOKEN: "${{ github.event_name == 'push' && endsWith(github.ref, 'develop') && matrix.node_version == 18 && secrets.RWT_BOT_PAT || github.token }}"
       with:
         token: ${{ env.TOKEN }}
     - uses: actions/setup-node@v3
@@ -28,7 +28,7 @@ jobs:
     - name: Build
       run: npm run build
     - uses: stefanzweifel/git-auto-commit-action@v4
-      if: ${{ github.event_name == 'push' && endsWith(github.ref, 'develop') && matrix.node_version == 16 }}
+      if: ${{ github.event_name == 'push' && endsWith(github.ref, 'develop') && matrix.node_version == 18 }}
       with:
         commit_message: Update Build
         file_pattern: 'build/*.js'
