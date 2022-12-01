@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RobotWebTools/ros2djs/actions/workflows/main.yml/badge.svg)](https://github.com/RobotWebTools/ros2djs/actions/workflows/main.yml)
 
-#### 2D Visualization Library for use with the ROS JavaScript Libraries
+***2D Visualization Library for use with the ROS JavaScript Libraries***
 
 For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check out some [working demos](http://robotwebtools.org/).
 
