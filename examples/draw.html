@@ -9,16 +9,17 @@
 <script src="../build/ros2d.js"></script>
 
 <script>
-	/**
-	 * Setup all visualization elements when the page is loaded.
-	 */
-	function init() {
-		// Create the main viewer.
-		var viewer = new ROS2D.Viewer({
-			divID : 'map',
-			width : 300,
-			height : 200
-		});
+  /**
+   * Setup all visualization elements when the page is loaded.
+   */
+  function init() {
+    // Create the main viewer.
+    var viewer = new ROS2D.Viewer({
+      divID : 'map',
+      width : 640,
+      height : 480,
+      context2dOptions: {willReadFrequently: true},
+    });
 
 		// Callback functions when there is mouse interaction with the polygon
 		var clickedPolygon = false;
