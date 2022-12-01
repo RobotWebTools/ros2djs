@@ -105,7 +105,7 @@ ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
     var point = this.createPointShape(pos);
     this.pointContainer.addChild(point);
-    var numPoints = this.pointContainer.getNumChildren();
+    var numPoints = this.pointContainer.numChildren;
 
     // 0 points -> 1 point, 0 lines
     // 1 point  -> 2 points, lines: add line between previous and new point, add line between new point and first point
@@ -158,7 +158,7 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
     // 4 points -> 3 points, 3 lines: change line before point to remove, remove line after point to remove
     // etc
 
-    var numPoints = this.pointContainer.getNumChildren();
+    var numPoints = this.pointContainer.numChildren;
 
     if (numPoints < 2) {
 
@@ -202,7 +202,7 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
     point.x = newPos.x;
     point.y = -newPos.y;
 
-    var numPoints = this.pointContainer.getNumChildren();
+    var numPoints = this.pointContainer.numChildren;
     if (numPoints > 1) {
         // line before moved point
         var line1 = this.lineContainer.getChildAt((index-1+numPoints)%numPoints);
@@ -232,7 +232,7 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
         index = obj;
         line = this.lineContainer.getChildAt(index);
     }
-    var numPoints = this.pointContainer.getNumChildren();
+    var numPoints = this.pointContainer.numChildren;
     var xs = this.pointContainer.getChildAt(index).x;
     var ys = this.pointContainer.getChildAt(index).y;
     var xe = this.pointContainer.getChildAt((index+1)%numPoints).x;
@@ -260,14 +260,14 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
  * Internal use only
  */
 ROS2D.PolygonMarker.prototype.drawFill = function() {
-    var numPoints = this.pointContainer.getNumChildren();
+    var numPoints = this.pointContainer.numChildren;
     if (numPoints > 2) {
         var g = this.fillShape.graphics;
         g.clear();
         g.setStrokeStyle(0);
-        g.moveTo(this.pointContainer.getChildAt(0).x, this.pointContainer.getChildAt(0).y);
         g.beginStroke();
         g.beginFill(this.fillColor);
+        g.moveTo(this.pointContainer.getChildAt(0).x, this.pointContainer.getChildAt(0).y);
         for (var i=1; i<numPoints; ++i) {
             g.lineTo(this.pointContainer.getChildAt(i).x, this.pointContainer.getChildAt(i).y);
         }
