@@ -78,7 +78,11 @@ var ImageMap = /*@__PURE__*/(function (superclass) {
   return ImageMap;
 }(createjs.Bitmap));
 
-var eventemitter2 = {exports: {}};
+var eventemitter2Exports = {};
+var eventemitter2 = {
+  get exports(){ return eventemitter2Exports; },
+  set exports(v){ eventemitter2Exports = v; },
+};
 
 /*!
  * EventEmitter2
@@ -1714,7 +1718,7 @@ var eventemitter2 = {exports: {}};
 	}();
 } (eventemitter2));
 
-var EventEmitter2 = eventemitter2.exports;
+var EventEmitter2 = eventemitter2Exports;
 
 /**
  * @fileOverview
