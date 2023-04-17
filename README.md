@@ -4,11 +4,11 @@
 
 ***2D Visualization Library for use with the ROS JavaScript Libraries***
 
-For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check out some [working demos](http://robotwebtools.org/).
+For full documentation, see [the ROS wiki](http://ros.org/wiki/ros2djs) or check out some [working demos](https://robotwebtools.github.io/).
 
-[JSDoc](http://robotwebtools.org/ros2djs) can be found on the Robot Web Tools website.
+[JSDoc](https://robotwebtools.github.io/ros2djs) can be found on the Robot Web Tools website.
 
-This project is released as part of the [Robot Web Tools](http://robotwebtools.org/) effort.
+This project is released as part of the [Robot Web Tools](https://robotwebtools.github.io/) effort.
 
 ### Usage
 
