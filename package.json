@@ -1,6 +1,6 @@
 {
   "name": "ros2d",
-  "homepage": "https://www.robotwebtools.org",
+  "homepage": "https://robotwebtools.github.io",
   "description": "2D Visualization Library for use with the ROS JavaScript Libraries",
   "version": "0.10.0",
   "license": "BSD-3-Clause",
@@ -55,7 +55,7 @@
     "ros2djs",
     "robot"
   ],
-  "author": "Robot Webtools Team <robot-web-tools@googlegroups.com> (http://robotwebtools.org)",
+  "author": "Robot Webtools Team <robot-web-tools@googlegroups.com> (https://robotwebtools.github.io)",
   "directories": {
     "example": "examples"
   }
